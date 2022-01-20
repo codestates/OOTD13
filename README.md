@@ -83,3 +83,11 @@ OOTD13은 뭐가 다른가요?
 💻 Contribution
 <hr>
 <p align="right">(<a href="#top">상단으로 돌아가기</a>)</p>
+
+## :mag_right: OOTD13에 대해 더 알아보기
+
+* [Ui](https://github.com/codestates/OOTD13/wiki/UI#ui)
+* [Objective](https://github.com/codestates/OOTD13/wiki/Requirements)
+* [See more detail](https://github.com/codestates/OOTD13/wiki)
+
+<p align="right">(<a href="#top">상단으로 돌아가기</a>)</p>
