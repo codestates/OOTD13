@@ -31,17 +31,17 @@ OOTD13은 뭐가 다른가요?
 <p align="right">(<a href="#top">상단으로 돌아가기</a>)</p>
 
 ## :runner: Team Member
-### 김상언 [![깃허브](https://img.shields.io/badge/GitHub-vvindovv-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/vvindovv)    
-**- Role :** Team Member
 
-**- Position :** Front-End
+### 정현진 [![깃허브](https://img.shields.io/badge/GitHub-Jhin3283-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/Jhin3283)
+**- Role :** Team Leader
 
-**- Stack :** `HTML` `CSS` `JavaScript` `React` `Axios` `Styled-Components` 
+**- Position :** Back-End
+
+**- Stack :** `Node.express` `Sequelize` `jwt` `MySQL` `Node.js` 
 
 **- Works :**
 
 💻 Contribution
-<hr>
 
 ### 한주형 [![깃허브](https://img.shields.io/badge/GitHub-MR.HANBEAN-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/Mr-Hanbean)
 **- Role :** Team Member
@@ -71,15 +71,15 @@ OOTD13은 뭐가 다른가요?
 💻 Contribution
 <hr>
 
-### 정현진 [![깃허브](https://img.shields.io/badge/GitHub-Jhin3283-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/Jhin3283)
-**- Role :** Team Leader
+### 김상언 [![깃허브](https://img.shields.io/badge/GitHub-vvindovv-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/vvindovv)    
+**- Role :** Team Member
 
-**- Position :** Back-End
+**- Position :** Front-End
 
-**- Stack :** `Node.express` `Sequelize` `jwt` `MySQL` `Node.js` 
+**- Stack :** `HTML` `CSS` `JavaScript` `React` `Axios` `Styled-Components` 
 
 **- Works :**
 
 💻 Contribution
-
+<hr>
 <p align="right">(<a href="#top">상단으로 돌아가기</a>)</p>
