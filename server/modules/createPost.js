@@ -9,7 +9,8 @@ module.exports={
             content_id:content.id,
             image_src:imageSrc,
         })
-        const tags=[];
+
+        let tags=[];
         if(sex){
             const sexTag= await models.tag.findOne({where:{tag_num:sex}});
             tags.push(sexTag)
@@ -32,6 +33,7 @@ module.exports={
                 tag_id:tag.Id
             })
         })
+        
         return {
             post:{
                 userId:article.user_id,
