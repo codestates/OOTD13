@@ -26,9 +26,10 @@ module.exports = {
         defaultValue:0
       },
       createdAt: {
-        allowNull:false,
-        type: Sequelize.DATE
-      }
+        type: 'TIMESTAMP',
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
+      },
     });
   },
   async down(queryInterface, Sequelize) {
