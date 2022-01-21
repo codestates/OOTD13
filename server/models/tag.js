@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   tag.init({
     id: DataTypes.INTEGER,
+    tag_num:DataTypes.INTEGER,
     tag_name: DataTypes.STRING
   }, {
     sequelize,
