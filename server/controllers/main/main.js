@@ -6,7 +6,7 @@ module.exports ={
         const page=req.query.page||1;
         let articles=await models.article.findAll();
         let articleIds=articles.map(el=>el.dataValues.id)
-        
+
         if(req.query.sex){
             const tag= await models.tag.findOne({where:{tag_num:100+req.query.sex}});
             let filteringIds=await models.article_tag.findAll({where:{tag_id:tag.dataValues.id}});
@@ -41,7 +41,7 @@ module.exports ={
         }))
 
         const sorting={recent:'createdAt',popular:'view',like:'like',old:'createdAt'}
-        if(!sorting[req.query.order]) return res.status(400).send({response:'not found'})
+        if(!sorting[order]) return res.status(400).send({response:'not found'})
         articles.sort((a,b)=>{
             return a[sorting[req.query.order]]-b[sorting[req.query.order]];
         })
