@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var controllers=require('../controllers')
+var controllers=require('../controllers/post/index')
 
 
 /* GET users listing. */
-router.get('/', controllers.post.getPost);
-router.post('/', controllers.post.postPost);
-router.put('/', controllers.post.putPost);
-router.delete('/', controllers.post.deletePost);
+router.get('/', controllers.getPost);
+router.post('/', controllers.postPost);
+router.put('/', controllers.putPost);
+router.delete('/', controllers.deletePost);
 
 module.exports = router;
