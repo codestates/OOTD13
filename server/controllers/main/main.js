@@ -32,8 +32,8 @@ module.exports ={
             articleIds=articleIds.filter(el=>filteringIds.includes(el))
         }
 
-        if(articleIds.length){
-            res.status(400).send({response:'not found'})
+        if(!articleIds.length){
+            return res.status(400).send({response:'not found'})
         }
 
         articles=await Promise.all(articleIds.map(async (id)=>{
@@ -41,6 +41,7 @@ module.exports ={
         }))
 
         const sorting={recent:'createdAt',popular:'view',like:'like',old:'createdAt'}
+        if(!sorting[req.query.order]) return res.status(400).send({response:'not found'})
         articles.sort((a,b)=>{
             return a[sorting[req.query.order]]-b[sorting[req.query.order]];
         })
@@ -68,7 +69,7 @@ module.exports ={
             }
         }))
 
-        res.status(200).send({
+        return res.status(200).send({
             data:{
                 post:realResult
             },
