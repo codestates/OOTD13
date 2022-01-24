@@ -14,11 +14,7 @@ module.exports = {
     } else{
       const userInfo = requestUserInfoGit(token)
       if(!userInfo) return err;
-      return {
-        email:userInfo.login+'@github.com',
-        username:userInfo.login,
-        login_method:1
-      }
+      return userInfo;
     }
   },
 };
