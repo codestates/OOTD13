@@ -8,11 +8,12 @@ module.exports = async (req, res) => {
     return res.status(401).send({ response: "not authorized" });
   }
   else {
-  modifyPassword(userInfo.email, req.body.newPassword)
-    .then(() => {
-      res.status(200).send({ response: "ok" });
-    })
-    .catch((err) => {
-      return err;
-    });
+    modifyPassword(userInfo.email, req.body.newPassword)
+        .then(() => {
+        res.status(200).send({ response: "ok" });
+        })
+        .catch((err) => {
+        return err;
+        });
+    }
 }
