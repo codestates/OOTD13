@@ -1,33 +1,16 @@
 const models = require("../models");
 
 module.exports = {
-  findUser: async (email) => {
-    return models.user.findOne({
-      where: { email: email },
-    });
-  },
-  passwordConfirm: async (findUser, password) => {
-    const dbPassword = findUser.password;
-    if (password === dbPassword) {
-      return true;
+  findUser: ({ loginMethod, email, password, username }) => {
+    let parm = {};
+    if (loginMethod && email) {
+      models.user.findOne({
+        where: { login_method: loginMethod, email: email },
+      });
     }
-    return false;
-  },
-  emailConfirm: async (findUser, email) => {
-    const deEmail = findUser.email;
-    if (email === dbEmail) {
-      return true;
-    }
-    return false;
-  },
-  usernameConfirm: async (findUser, username) => {
-    const dbUsername = findUser.username;
-    if (username === dbUsername) {
-      return true;
-    }
-    return false;
-  },
-  modifyPassword: async (userId, password) => {
-    await models.user.update({ password: password }, { where: { id: userId } });
+    if (email) parm.email = email;
+    if (password) parm.password = password;
+    if (username) parm.username = username;
+    models.user.findOne({ where: parm });
   },
 };
