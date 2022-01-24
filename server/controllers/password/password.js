@@ -1,3 +1,5 @@
 module.exports={
-    password:(req,res)=>{}
+    password:(req,res)=>{
+        
+    }
 }

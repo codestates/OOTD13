@@ -2,7 +2,7 @@ const modifyPost=require('../../modules/modifyPost');
 const validateToken=require('../../modules/validateToken');
 const findUser=require('../../modules/findUser');
 
-module.exports=(req,res)=>{
+module.exports=async (req,res)=>{
     const loginMethod=req.query.loginmethod||0;
     let contentCondition={};
     if(req.body.shirts) contentCondition.shirts=req.body.shirts;
@@ -18,7 +18,7 @@ module.exports=(req,res)=>{
     if(req.body.style) tagCondition.style=req.body.style;
 
     try{
-        const tokenInfo =await validateToken(loginMethod,req.header.authorization);
+        const tokenInfo =await validateToken.validateToken(loginMethod,req.header.authorization);
         const userInfo=await findUser({loginMethod:loginMethod,email:tokenInfo.email});
         const modifiedPost = await modifyPost(req.query.id,loginMethod,req.body.imageSrc,contentCondition,tagCondition);
         res.status(200).send({
