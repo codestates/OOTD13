@@ -10,6 +10,6 @@ module.exports = async ({ loginMethod, email, password, username }) => {
     const userInfo=await models.user.findOne({ where: params });
     return userInfo;
   } catch {
-    return false;
+    return null;
   }
 }

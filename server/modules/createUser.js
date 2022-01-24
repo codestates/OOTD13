@@ -7,7 +7,6 @@ module.exports = {
         email: email,
         username: username,
         password: password,
-        login_method: 0,
       });
     }
     models.user.create({
