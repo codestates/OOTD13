@@ -4,6 +4,6 @@ var controllers=require('../controllers/password/password');
 
 
 /* GET users listing. */
-router.patch('/',controllers.password);
+router.patch('/',controllers);
 
 module.exports = router;
