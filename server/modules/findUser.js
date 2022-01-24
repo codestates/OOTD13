@@ -8,7 +8,6 @@ module.exports = async ({ loginMethod, email, password, username }) => {
   if (username) params.username = username;
   try {
     const userInfo=await models.user.findOne({ where: params });
-    console.log(userInfo,'@@@@@@@@@@@@@@@@@@@')
     return userInfo;
   } catch {
     return false;
