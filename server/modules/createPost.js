@@ -5,7 +5,7 @@ module.exports=async (userInfo,loginMethod,imageSrc,{shirts,pants,acc,outer,shoe
     const article = await models.article.create({
         user_id:userInfo.id,
         content_id:content.id,
-        image_src:imageSrc,
+        image_src:imageSrc
     })
 
     let tags=[];
@@ -35,7 +35,7 @@ module.exports=async (userInfo,loginMethod,imageSrc,{shirts,pants,acc,outer,shoe
     return {
         post:{
             userId:article.user_id,
-            username:user.username,
+            username:userInfo.username,
             imageSrc:imageSrc,
             like:article.like,
             view:article.like,

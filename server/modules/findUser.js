@@ -2,7 +2,7 @@ const models = require("../models");
 
 module.exports = async ({ loginMethod, email, password, username }) => {
   let params = {};
-  if (loginMethod) params.loginMethod=loginMethod;
+  if (loginMethod) params.login_method=loginMethod;
   if (email) params.email = email;
   if (password) params.password = password;
   if (username) params.username = username;

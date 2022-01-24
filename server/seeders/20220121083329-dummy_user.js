@@ -13,6 +13,12 @@ module.exports = {
         username: 'parkhacker',
         email:'parkhacker@github.com',
         password:null,
+        login_method:0
+      },
+      {
+        username: 'qwp0905',
+        email:'qwp0905@github.com',
+        password:null,
         login_method:1
       },
     ], {});
