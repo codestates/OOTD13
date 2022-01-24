@@ -1,6 +1,6 @@
 const models=require('../models')
 
-module.exports=async (userInfo,loginMethod,imageSrc,{shirts,pants,acc,outer,shoes},{sex,weather,season,style})=>{
+module.exports=async (userInfo,imageSrc,{shirts,pants,acc,outer,shoes},{sex,weather,season,style})=>{
     const content=await models.content.create({shirts,pants,acc,outer,shoes});
     const article = await models.article.create({
         user_id:userInfo.id,
@@ -43,6 +43,12 @@ module.exports=async (userInfo,loginMethod,imageSrc,{shirts,pants,acc,outer,shoe
             tag:tags.map((el)=>el.tag_name),
             createAt:article.createdAt
         },
-        content:content
+        content:{
+            shirts:content.shirts,
+            pants:content.pants,
+            acc:content.acc,
+            outer:content.outer,
+            shoes:content.shoes
+        }
     }
 }

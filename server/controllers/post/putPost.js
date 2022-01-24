@@ -5,6 +5,7 @@ const findUser=require('../../modules/findUser');
 module.exports=async (req,res)=>{
     const loginMethod=req.query.loginmethod||0;
     let contentCondition={};
+    console.log(req.body)
     if(req.body.shirts) contentCondition.shirts=req.body.shirts;
     if(req.body.pants) contentCondition.pants=req.body.pants;
     if(req.body.acc) contentCondition.acc=req.body.acc;
@@ -19,11 +20,11 @@ module.exports=async (req,res)=>{
 
     try{
         const tokenInfo =await validateToken.validateToken(loginMethod,req.headers.authorization);
-        const userInfo=await findUser({loginMethod:loginMethod,email:tokenInfo.email});
-        const modifiedPost = await modifyPost(req.query.id,loginMethod,req.body.imageSrc,contentCondition,tagCondition);
+        await findUser({loginMethod:loginMethod,email:tokenInfo.email});
+        const modifiedPost = await modifyPost(req.query.id,req.body.imageSrc,contentCondition,tagCondition);
         res.status(200).send({
             data:modifiedPost,
-           response:'created'
+           response:'modified'
        })
     } catch {
         res.status(401).send({response:'not authorized'})
