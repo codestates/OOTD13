@@ -4,9 +4,9 @@ const requestUserInfoGit = require("./../../modules/requestUserInfoGit");
 const findUser = require("./../../modules/findUser");
 
 module.exports = async (req, res) => {
-  const token = requestTokenGit(req.body.authorizationCode);
-  const gitUserInfo = requestUserInfoGit(token);
-  const userInfo = findUser({ email: (await gitUserInfo).email });
+  const token = await requestTokenGit(req.body.authorizationCode);
+  const gitUserInfo = await requestUserInfoGit(token);
+  const userInfo = await findUser({ email: gitUserInfo.email });
   if (!token) {
     return res.status(401).send({ response: "invalid code" });
   }
