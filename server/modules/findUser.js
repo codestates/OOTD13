@@ -1,16 +1,16 @@
 const models = require("../models");
 
-module.exports = {
-  findUser: ({ loginMethod, email, password, username }) => {
-    let parm = {};
-    if (loginMethod && email) {
-      models.user.findOne({
-        where: { login_method: loginMethod, email: email },
-      });
-    }
-    if (email) parm.email = email;
-    if (password) parm.password = password;
-    if (username) parm.username = username;
-    models.user.findOne({ where: parm });
-  },
-};
+module.exports = async ({ loginMethod, email, password, username }) => {
+  let params = {};
+  if (loginMethod) params.loginMethod=loginMethod;
+  if (email) params.email = email;
+  if (password) params.password = password;
+  if (username) params.username = username;
+  try {
+    const userInfo=await models.user.findOne({ where: params });
+    return userInfo;
+  } catch {
+    return null;
+  }
+}
+
