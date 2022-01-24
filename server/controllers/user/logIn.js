@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   if (email === userInfo.email && password === userInfo.password) {
     return res.status(200).json({
       data: {
-        accessToken: createToken(userInfo),
+        accessToken: createToken.createToken(userInfo),
         userInfo: {
           email: userInfo.email,
           username: userInfo.username,
