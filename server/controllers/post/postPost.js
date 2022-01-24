@@ -18,10 +18,10 @@ module.exports=async (req,res)=>{
     if(req.body.style) tagCondition.style=req.body.style;
 
     try{
-        const tokenInfo =await validateToken(0,req.header.authorization);
+        const tokenInfo =await validateToken(loginMethod,req.header.authorization);
         const userInfo=await findUser({loginMethod:loginMethod,email:tokenInfo.email});
         const createdPost = await createPost(userInfo,loginMethod,req.body.imageSrc,contentCondition,tagCondition);
-        res.status(200).send({
+        res.status(201).send({
             data:createdPost,
            response:'created'
        })
