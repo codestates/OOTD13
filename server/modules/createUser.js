@@ -1,7 +1,7 @@
 const models = require("../models");
 
 module.exports = {
-  createUser: async (loginMethod, email, username, password) => {
+  createUser: (loginMethod, email, username, password) => {
     if (!loginMethod) {
       models.user.create({
         email: email,
@@ -14,7 +14,6 @@ module.exports = {
       email: email,
       login_method: loginMethod,
       username: username,
-      password: null,
     });
   },
 };

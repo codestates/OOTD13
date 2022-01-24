@@ -7,7 +7,7 @@ module.exports= async (req,res)=>{
     try {
         const loginMethod=req.query.loginMethod||0;
         const post=await findPost(req.query.id);
-        const tokenInfo=await validateToken.validateToken(loginMethod,req.header.authorization);
+        const tokenInfo=await validateToken.validateToken(loginMethod,req.headers.authorization);
         const userInfo=await findUser({loginMethod:loginMethod,email:tokenInfo.email});
         if(post.user_id===userInfo.id){
             deletePost(req.query.id);
