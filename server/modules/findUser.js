@@ -13,4 +13,3 @@ module.exports = async ({ loginMethod, email, password, username }) => {
     return null;
   }
 }
-
