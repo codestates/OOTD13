@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var controllers=require('../controllers')
+var controllers=require('../controllers/user/index.js')
 
 
 /* GET users listing. */
-router.get('/logout',controllers.logOut);
-router.post('/login',controllers.user.logIn);
-router.post('/login/github',controllers.user.githubLogin);
-router.post("/signup",controllers.user.singUp);
-router.post('/emailcheck',controllers.user.emailCheck);
-router.post('/namecheck',controllers.user.nameCheck);
-router.delete('/withdrawal',controllers.user.withDrawal);
+router.get('/logout',controllers.logout);
+router.post('/login',controllers.logIn);
+router.post('/login/github',controllers.githubLogin);
+router.post("/signup",controllers.signUp);
+router.post('/emailcheck',controllers.emailCheck);
+router.post('/namecheck',controllers.nameCheck);
+router.delete('/withdrawal',controllers.withDrawal);
 
 module.exports = router;

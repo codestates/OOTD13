@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'article_id',
         sourceKey:'id'
       })
-      article.belongsTo(models.content_id,{
+      article.belongsTo(models.content,{
         foreignKey:'content_id',
         sourceKey:'id'
       })
