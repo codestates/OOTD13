@@ -2,7 +2,7 @@ const models=require('../models')
 
 module.exports=async (email,loginMethod,imageSrc,{shirts,pants,acc,outer,shoes},{sex,weather,season,style})=>{
     const content=await models.content.create({shirts,pants,acc,outer,shoes});
-    const user = await models.user.findOne({where:{email:email,login_method:loginMethod}})
+    const user = await models.user.findOne({where:{email:email,login_method:loginMethod}});
     const article = await models.article.create({
         user_id:user.id,
         content_id:content.id,
