@@ -6,11 +6,11 @@ module.exports = {
   validateToken: async (loginMethod, token) => {
     if(!token) return null;
     if (!loginMethod) {
-      try {
+      // try {
         return verify(token, process.env.ACCESS_SECRET);
-      } catch (err) {
-        return err;
-      }
+      // } catch (err) {
+      //   return err;
+      // }
     } else{
       const userInfo = requestUserInfoGit(token)
       if(!userInfo) return err;

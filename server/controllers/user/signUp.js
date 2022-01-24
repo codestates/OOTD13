@@ -1,7 +1,7 @@
 const createUser = require('./../../modules/createUser')
 
-module.exports=(req,res)=>{
-    const {loginMethod, email, password, username} = req.body
-    createUser({loginMethod,email,password,username})
+module.exports= async (req,res)=>{
+    const {email, password, username} = req.body
+    await createUser.createUser({email:email,password:password,username:username})
     return res.status(201).send({response:'ok'})
 }
