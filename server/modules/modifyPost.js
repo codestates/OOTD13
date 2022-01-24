@@ -1,11 +1,12 @@
 const models=require('../models')
 
 module.exports= async (postId,imageSrc,{shirts,pants,acc,outer,shoes},{sex,weather,season,style})=>{
-    const article=await models.post.findOne({where:{id:postId}});
+    console.log(postId)
+    const article=await models.article.findOne({where:{id:postId}});
     const user= await models.user.findOne({where:{id:article.user_id}})
-
-    models.content.update({shirts,pants,acc,outer,shoes},{where:{id:article.content_id}});
-    models.post.update({image_src:imageSrc});
+    
+    await models.content.update({shirts,pants,acc,outer,shoes},{where:{id:article.content_id}});
+    await models.article.update({image_src:imageSrc},{where:{id:postId}});
         
     models.article_tag.destroy({where:{article_id:postId}});
         
@@ -32,6 +33,7 @@ module.exports= async (postId,imageSrc,{shirts,pants,acc,outer,shoes},{sex,weath
             tag_id:tag.Id
         })
     })
+    const content=await models.content.findOne({where:{id:article.content_id}})
 
     return {
         post:{
@@ -44,6 +46,12 @@ module.exports= async (postId,imageSrc,{shirts,pants,acc,outer,shoes},{sex,weath
             tag:tags.map((el)=>el.tag_name),
             createAt:article.createdAt
         },
-        content:content
+        content:{
+            shirts:content.shirts,
+            pants:content.pants,
+            acc:content.acc,
+            outer:content.outer,
+            shoes:content.shoes
+        }
     }
 }
