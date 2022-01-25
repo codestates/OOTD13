@@ -6,6 +6,7 @@ module.exports = async (req, res) => {
     email: email,
     password: password,
     username: username,
+    loginMethod:"0"
   });
   return res.status(201).send({ response: "ok" });
 };
