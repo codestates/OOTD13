@@ -12,7 +12,8 @@ module.exports = {
         type:Sequelize.INTEGER,
         references:{
           model:'users',
-          key:'id'
+          key:'id',
+          onDelete: 'CASCADE'
         }
       },
       image_src: {
@@ -32,6 +33,7 @@ module.exports = {
         references:{
           model:'contents',
           key:'id',
+          onDelete: 'CASCADE'
         }
       },
       createdAt: {

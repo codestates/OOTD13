@@ -11,7 +11,7 @@ module.exports = {
         content_id:1
       },
       {
-        user_id:1,
+        user_id:2,
         image_src:'',
         like:'10120',
         view:'12312312',
@@ -25,7 +25,7 @@ module.exports = {
         content_id:3
       },
       {
-        user_id:1,
+        user_id:2,
         image_src:'',
         like:'100222',
         view:'121112312',

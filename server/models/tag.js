@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       tag.hasMany(models.article_tag,{
         foreignKey:'tag_id',
-        sourceKey:'id'
+        sourceKey:'id',
+        onDelete: 'CASCADE'
       })
     }
   }

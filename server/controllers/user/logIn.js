@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     if (!userInfo) return res.status(404).send({ response: "login err" });
     res.status(200).json({
       data: {
-        accessToken: createToken.createToken(userInfo),
+        accessToken: await createToken.createToken(userInfo),
         userInfo: {
           email: userInfo.email,
           username: userInfo.username,
