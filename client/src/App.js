@@ -7,7 +7,6 @@ import Post from "./pages/Post";
 import Withdrawal from "./pages/Withdrawal";
 import Root from "./pages/Root";
 import logo from "./images/ootd13Logo.png";
-import Main from "./pages/Main"
 import {
   BrowserRouter as Router,
   Routes,
@@ -33,28 +32,35 @@ function App() {
   
   useEffect(()=> {
     const url = new URL(window.location.href)
-    const authorizationCode = url.searchParams.get('code')
+    const authorizationCode = url.searchParams.get('code');
     console.log(authorizationCode);
     if (authorizationCode) {
       getAccessToken(authorizationCode)
     }
   })
   
-  const getAccessToken = async (authorizationCode) => {
+  const getAccessToken = (authorizationCode) => {
     // 받아온 authorization code로 다시 OAuth App에 요청해서 access token을 받을 수 있습니다.
     // access token은 보안 유지가 필요하기 때문에 클라이언트에서 직접 OAuth App에 요청을 하는 방법은 보안에 취약할 수 있습니다.
     // authorization code를 서버로 보내주고 서버에서 access token 요청을 하는 것이 적절합니다.
-    console.log("getAccessToken 실행");
-    console.log("authorizationCode = ", authorizationCode);
+    
     // await axios.post("http://localhost:4000/callback", {authorizationCode: authorizationCode})
     //   .then(res => this.setState({isLogin: true, accessToken: res.data.accessToken}))
     //   .catch((err) => console.log(err));
-    let resp = await axios.post('http://localhost:5000/user/login/github', { authorizationCode})
-
-    this.setState({
-        isLogin: true,
-        accessToken: resp.data.accessToken
+    axios({
+      url: 'http://localhost:5000/user/login/github',
+      method: 'post',
+      data: {
+        authorizationCode
+      }
     })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    
+    // this.setState({
+    //     isLogin: true,
+    //     accessToken: resp.data.accessToken
+    // })
   }
 
   return (
@@ -91,7 +97,7 @@ function App() {
           </div>
         </Header>
         <Body>
-          <Main />
+          바디입니다.
         </Body>
         <FooterContainer>
           <div></div>
