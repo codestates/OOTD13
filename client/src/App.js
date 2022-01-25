@@ -7,6 +7,7 @@ import Post from "./pages/Post";
 import Withdrawal from "./pages/Withdrawal";
 import Root from "./pages/Root";
 import logo from "./images/ootd13Logo.png";
+import Main from "./pages/Main"
 import {
   BrowserRouter as Router,
   Routes,
@@ -90,7 +91,7 @@ function App() {
           </div>
         </Header>
         <Body>
-          바디입니다.
+          <Main />
         </Body>
         <FooterContainer>
           <div></div>
