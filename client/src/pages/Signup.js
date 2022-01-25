@@ -304,7 +304,10 @@ export const Signup = () => {
     } else {
       axios
         .post("http://localhost:5000/user/signup", {email, password, username})
-        .then((res) => alert("회원가입에 성공했습니다."))
+        .then((res) => {
+          alert("회원가입에 성공했습니다.");
+          window.location.href = "http://localhost:3000"
+        })
         .catch((err) => console.log(err));
     }
   }

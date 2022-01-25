@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import styled from "styled-components";
 
@@ -59,13 +60,35 @@ const Cancel = styled(Button)`
   color: black;
 `
 export const Withdrawal = () => {
+  // 추후 props 처리해야됨.
+  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQG5hdmVyLmNvbSIsInVzZXJuYW1lIjoi6rWs6rWsIiwicGFzc3dvcmQiOiIxMjM0IiwibG9naW5fbWV0aG9kIjowLCJjcmVhdGVkQXQiOiIyMDIyLTAxLTI1VDA2OjQ0OjUwLjAwMFoiLCJpYXQiOjE2NDMwOTc1ODcsImV4cCI6MTY0MzE4Mzk4N30.XAgDOukIPgNBK3IPXL19m-yztF0xVJcZEAgJdECKeU0";
+  const email = "qwp0905@github.com";
+  const LOGIN_METHOD = 1;
+
+  const clickToSubmit = () => {
+    axios({
+      url: `http://localhost:5000/user/withdrawal?loginmethod=${LOGIN_METHOD}`,
+      method: "delete",
+      headers: {authorization: accessToken},
+      data: {email}
+    })
+    .then((res) => {
+      alert("회원탈퇴가 성공적으로 되었습니다.");
+      window.location.href = "http://localhost:3000"
+    })
+    .catch((err) => console.log(err));
+  }
+  const clickToRedirect = () => {
+    window.location.href = "http://localhost:3000"
+  }
+
   return (
     <Div>
       <Main>
         <Span>정말 탈퇴하시겠습니까?</Span>
         <Section>
-          <Button>예</Button>
-          <Cancel>아니오</Cancel>
+          <Button onClick={clickToSubmit}>예</Button>
+          <Cancel onClick={clickToRedirect}>아니오</Cancel>
         </Section>
       </Main>
   </Div>

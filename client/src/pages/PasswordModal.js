@@ -65,6 +65,7 @@ const Cancel = styled(Button)`
   color: black;
 `
 export const PasswordModal = () => {
+  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQG5hdmVyLmNvbSIsInVzZXJuYW1lIjoi6rWs6rWsIiwicGFzc3dvcmQiOiIxMjM0IiwibG9naW5fbWV0aG9kIjowLCJjcmVhdGVkQXQiOiIyMDIyLTAxLTI1VDA2OjQ0OjUwLjAwMFoiLCJpYXQiOjE2NDMwOTc1ODcsImV4cCI6MTY0MzE4Mzk4N30.XAgDOukIPgNBK3IPXL19m-yztF0xVJcZEAgJdECKeU0"
   const userPassword = 1234;
   const email = "test2@naver.com";
   const [curPassword, setCurPassword] = useState("");
@@ -123,14 +124,25 @@ export const PasswordModal = () => {
       alert("새 비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
       return;
     } else {
-      console.log(Number(curPassword), userPassword)
-      axios
-        .patch("http://loalhost:5000/password", {curPassword, newPassword, email})
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+      axios({
+        url: "http://localhost:5000/password",
+        method: "patch",
+        headers: {authorization: accessToken},
+        data: {
+          curPassword,
+          newPassword,
+          email
+      }})
+      .then((res) => {
+        alert("비밀번호가 성공적으로 변경되었습니다.");
+        window.location.href = "http://localhost:3000";    
+      })
+      .catch((err) => console.log(err));
     }
   }
-
+  const reDirectToHome = () => {
+    window.location.href = "http://localhost:3000";
+  }
   return (
     <Div>
     <Main>
@@ -147,7 +159,7 @@ export const PasswordModal = () => {
         <Input type="password" onChange={changeNewPasswordCheck} placeholder="변경할 비밀번호 확인"></Input>
       </Section>
         <Button onClick={checkingPassword}>확인</Button>
-        <Cancel >취소</Cancel>
+        <Cancel onClick={reDirectToHome}>취소</Cancel>
     </Main>
   </Div>
   )
