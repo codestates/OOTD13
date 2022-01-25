@@ -2,10 +2,12 @@ const createToken = require("./../../modules/createToken");
 const findUser = require("./../../modules/findUser");
 
 module.exports = async (req, res) => {
-  const { email, password } = req.body;
-  const userInfo = await findUser({ email: email });
-  if (email === userInfo.email && password === userInfo.password) {
-    return res.status(200).json({
+  const { email, password  } = req.body;
+  
+  try{
+    const userInfo = await findUser({ email: email ,loginMethod:0, password: password});
+    if(!userInfo) return res.status(404).send({ response: "login err" });
+    res.status(200).json({
       data: {
         accessToken: createToken.createToken(userInfo),
         userInfo: {
@@ -16,6 +18,7 @@ module.exports = async (req, res) => {
         },
       },
     });
+  }catch{
+    return res.status(404).send({ response: "login err" });
   }
-  return res.status(404).send({ response: "login err" });
 };
