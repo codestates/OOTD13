@@ -5,10 +5,10 @@ const req = require("express/lib/request");
 
 module.exports = {
   validateToken: async (loginMethod, token) => {
-    if (loginMethod===0) {
+    if (loginMethod==='0') {
       const userInfo=verify(token, process.env.ACCESS_SECRET);
       return userInfo;
-    } else if (loginMethod===1) {
+    } else if (loginMethod==='1') {
       const userInfo = requestUserInfoGit(token);
       return userInfo;
     }
