@@ -10,9 +10,9 @@ module.exports = async (req, res) => {
   if (!userInfo) return res.status(401).send({ response: "not authorized1" });
   deleteUser
     .deleteUserPost(userInfo.email, req.query.loginmethod)
-    .then(()=>{
-      deleteUser.deleteUser(userInfo.email, req.query.loginmethod)
-    })
+    // .then(()=>{
+    //   deleteUser.deleteUser(userInfo.email, req.query.loginmethod)
+    // })
     .then(() => {
       res.status(204).send({ response: "deleted" });
     })
