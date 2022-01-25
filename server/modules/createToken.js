@@ -14,7 +14,6 @@ module.exports = {
     const accessToken = jwt.sign(data, process.env.ACCESS_SECRET, {
       expiresIn: "1d",
     });
-    console.log(accessToken);
     return accessToken;
   },
 };

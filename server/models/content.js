@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       content.hasOne(models.article,{
         foreignKey:'content_id',
-        sourceKey:'id'
+        sourceKey:'id',
+        onDelete: 'CASCADE'
       })
     }
   }

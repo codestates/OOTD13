@@ -13,11 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       article_tag.belongsTo(models.article,{
         foreignKey:'article_id',
-        sourceKey:'id'
+        sourceKey:'id',
+        onDelete: 'CASCADE'
       })
       article_tag.belongsTo(models.tag,{
         foreignKey:'tag_id',
-        sourceKey:'id'
+        sourceKey:'id',
+        onDelete: 'CASCADE'
       })
     }
   }
