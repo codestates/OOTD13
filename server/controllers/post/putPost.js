@@ -5,7 +5,6 @@ const findUser=require('../../modules/findUser');
 module.exports=async (req,res)=>{
     const loginMethod=req.query.loginmethod||0;
     let contentCondition={};
-    console.log(req.body)
     if(req.body.shirts) contentCondition.shirts=req.body.shirts;
     if(req.body.pants) contentCondition.pants=req.body.pants;
     if(req.body.acc) contentCondition.acc=req.body.acc;
@@ -15,7 +14,7 @@ module.exports=async (req,res)=>{
     let tagCondition={};
     if(req.body.sex) tagCondition.sex=100+req.body.sex;
     if(req.body.weather) tagCondition.weather=200+req.body.weather;
-    if(req.body.season) tagCondition.weather=300+req.body.season;
+    if(req.body.season) tagCondition.season=300+req.body.season;
     if(req.body.style) tagCondition.style=400+req.body.style;
 
     try{
