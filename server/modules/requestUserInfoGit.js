@@ -7,8 +7,8 @@ module.exports = async (accessToken) => {
     headers: { authorization: `token ${accessToken}` },
   });
   return {
-    email:userInfo.data.login+'@github.com',
-    username:userInfo.data.login,
-    login_method:1  
+    email: userInfo.data.login + "@github.com",
+    username: userInfo.data.login,
+    login_method: 1,
   };
 };

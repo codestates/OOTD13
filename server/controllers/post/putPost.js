@@ -13,10 +13,10 @@ module.exports=async (req,res)=>{
     if(req.body.shoes) contentCondition.shoes=req.body.shoes;
 
     let tagCondition={};
-    if(req.body.sex) tagCondition.sex=req.body.sex;
-    if(req.body.weather) tagCondition.weather=req.body.weather;
-    if(req.body.season) tagCondition.weather=req.body.season;
-    if(req.body.style) tagCondition.style=req.body.style;
+    if(req.body.sex) tagCondition.sex=100+req.body.sex;
+    if(req.body.weather) tagCondition.weather=200+req.body.weather;
+    if(req.body.season) tagCondition.weather=300+req.body.season;
+    if(req.body.style) tagCondition.style=400+req.body.style;
 
     try{
         const tokenInfo =await validateToken.validateToken(loginMethod,req.headers.authorization);

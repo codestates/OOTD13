@@ -28,7 +28,7 @@ module.exports=async (userInfo,imageSrc,{shirts,pants,acc,outer,shoes},{sex,weat
     tags.forEach(tag=>{
         models.article_tag.create({
             article_id:article.id,
-            tag_id:tag.Id
+            tag_id:tag.id
         })
     })
         
