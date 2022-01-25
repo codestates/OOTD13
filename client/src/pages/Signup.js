@@ -299,6 +299,7 @@ export const Signup = () => {
   const clickSignup = () => {
     if(!isValidEmail || !isValidPassword || !isEmailChecked || !isSamePassword || !isUsernameChecked
       || !checkedItems.includes('use' &&'age' &&'agree')) {
+      alert("필수 항목을 입력바랍니다.");
       return;
     } else {
       axios
