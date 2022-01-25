@@ -7,7 +7,7 @@ module.exports = {
         email: email,
         username: username,
         password: password,
-        login_method: 0,
+        login_method: loginMethod,
       });
     }
     if (loginMethod === "1") {
