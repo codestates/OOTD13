@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect} from 'react';
 import logo from "../public/img/logo.png"; 
 import githubLogo from "../public/img/github_logo.png"
 import styled from 'styled-components';
+import axios from 'axios';
 
   const Div = styled.div`
     display: flex;
@@ -173,7 +174,7 @@ import styled from 'styled-components';
 export const Signup = () => {
   const [emailHead, setEmailHead] = useState("");
   const [emailTail, setEmailTail] = useState("");
-  const [userEmail, setUserEmail] = useState("123");
+  const [email, setEmail] = useState("123");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isEmailChecked, setIsEmailChecked] = useState(false);
@@ -182,26 +183,29 @@ export const Signup = () => {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [isSamePassword, setIsSamePassword] = useState(true);
   const [username, setUsername] = useState("");
-  const [isEmailNull, setIsEmailNull] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
-  const [useSpan, setUseSpan] = useState({email: 0, password: 0, passwordCheck: 0, username: 0})
+  const [useSpan, setUseSpan] = useState(
+    {
+    email: 0, 
+    password: 0, 
+    passwordCheck: 0, 
+    username: 0
+    })
+  
+  const options = ["naver.com", "hanmail.net", "daum.net", "gmail.com", "nate.com", "hotmail.com", "outlook.com", "icloud.com"];
 
   useEffect(()=>{
-    console.log(useSpan.email);
-
-    setUserEmail(`${emailHead}@${emailTail}`);
-    // 이메일 정규식 비교
-    // checkingEmailRegExp();
+    console.log(`emailHead = ${emailHead} emailTail = ${emailTail} email = ${email}`);
+    combineEmail();
     // 패스워드 정규식 비교
     checkingPasswordRegExp();
     // 패스워드, 패스워드체크 비교
     checkingPassword();
-  },[checkedItems,emailHead, emailTail, password, passwordCheck, username]);
+    console.log(isValidEmail);
+  },[email, emailHead, emailTail, password, passwordCheck, username, isValidEmail]);
 
   const changeUseSpan = (val) => {
-    console.log(val);
-    setUseSpan(useSpan[val] = useSpan[val]);
-    console.log(useSpan);
+    setUseSpan(Object.assign({}, useSpan, useSpan[val] = useSpan[val] + 1));
   }
 
   const handleCheckChange = (checked, val) => {
@@ -222,18 +226,19 @@ export const Signup = () => {
     }
   };
 
-  const changeEmailHead = (event) => {
-    if(event.target.value === "") {
-      setIsEmailNull(true);
-    } else {
-      setIsEmailNull(false);
-    }
-    setEmailHead(event.target.value);
-    checkingEmailRegExp();
+  const changeEmailHead = async (event) => {
+    event.preventDefault();
+    await setEmailHead(event.target.value);
+    combineEmail();
   }
 
   const changeEmailTail = (event) => {
-    setEmailTail(event.target.value);
+    event.preventDefault();
+    setEmailTail(event.target.value)
+  }
+  
+  const combineEmail = () => {
+    setEmail(`${emailHead}@${emailTail}`);
     checkingEmailRegExp();
   }
 
@@ -251,12 +256,20 @@ export const Signup = () => {
 
   const checkingUsername = () => {
     if(username.length <= 1) {
-      alert("별명이 형식에 맞지 않습니다.") //Delete
       return;
     } else {
-      alert(`입력하신 별명은 '${username}'입니다.`) //Delete
-      // isUsernameChecked(false);
-    }
+      axios
+      .post("http://localhost:5000/user/namecheck", {username})
+      .then((res) => {
+        if(res.status === 200) {
+          alert("사용 가능한 별명입니다.");
+          setIsUsernameChecked(true);
+        }
+      })
+      .catch((err) => {
+        alert("이미 사용 중인 별명입니다.")
+        setIsUsernameChecked(false);
+    })}     
   }
 
   const checkingEmail = (event) => {
@@ -264,11 +277,18 @@ export const Signup = () => {
     if(!isValidEmail) {
       return;
     } else {
-      alert(`입력하신 이메일은 ${userEmail}입니다.`)
-    }
-    setIsEmailChecked(true);
-    // alert("이미 사용 중인 이메일입니다."); 
-    // alert("사용 가능한 이메일입니다.")
+      axios
+      .post("http://localhost:5000/user/emailcheck", {email: email})
+      .then((res) => {
+        if(res.status === 200) {
+          alert("사용 가능한 이메일입니다.");
+          setIsEmailChecked(true);
+        }
+      })
+      .catch((err) => {
+        alert("이미 사용 중인 이메일입니다.")
+        setIsEmailChecked(false);
+    })}     
   }
 
   const checkingPassword = () => {
@@ -277,37 +297,34 @@ export const Signup = () => {
   }
 
   const clickSignup = () => {
-    if(!isValidEmail || isValidPassword) {
+    if(!isValidEmail || !isValidPassword || !isEmailChecked || !isSamePassword || !isUsernameChecked
+      || !checkedItems.includes('use' &&'age' &&'agree')) {
       return;
     } else {
-      alert("회원가입 성공!")
+      axios
+        .post("http://localhost:5000/user/signup", {email, password, username})
+        .then((res) => alert("회원가입에 성공했습니다."))
+        .catch((err) => console.log(err));
     }
   }
 
   const checkingEmailRegExp = () => {
-    console.log("checkingEmailRegExp 작동!");
     const emailRegExp = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
-    if(!userEmail.match(emailRegExp)) {
-      setIsValidEmail(false);
-    } else {
-      setIsValidEmail(true); 
-    }
+    if(!email.match(emailRegExp)) setIsValidEmail(false);
+    else setIsValidEmail(true); 
   };
   
   const checkingPasswordRegExp = () => {
     const passwordRegExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
-    if(!password.match(passwordRegExp)) {
-      setIsValidPassword(false);
-    } else {
-      setIsValidPassword(true);
-    }
+    if(!password.match(passwordRegExp)) setIsValidPassword(false);
+    else setIsValidPassword(true);
   }
 
   return (
     <Div>
       <Nav>
-      <a href="#" className=" center-form-github">
-        <img src={logo} width="150px"></img>
+      <a href="/" className=" center-form-github">
+        <img src={logo} alt="logo" width="150px"></img>
       </a>
       </Nav>
       <Main>
@@ -315,7 +332,7 @@ export const Signup = () => {
           <TopTitle>회원가입</TopTitle>
           <SnsSpan>SNS계정으로 간편 로그인/회원가입</SnsSpan>
           <GithubLink href="#" className="signup-form-github">
-            <img src={githubLogo} width="50px"></img>
+            <img src={githubLogo} alt="githubLogo" width="50px"></img>
           </GithubLink>
         <Hr></Hr>
         </TopForm>
@@ -325,26 +342,22 @@ export const Signup = () => {
             <EmailInput onChange={changeEmailHead} onKeyDown={() => changeUseSpan('email')} placeholder='이메일' required></EmailInput>
             <EmailIcon>@</EmailIcon>
           <EmailSelect onChange={changeEmailTail}>
-            <option value> 선택해주세요</option>
-            <option>naver.com</option>
-            <option>hanmail.net</option>
-            <option>daum.net</option>
-            <option>gmail.com</option>
-            <option>nate.com</option>
-            <option>hotmail.com</option>
-            <option>outlook.com</option>
-            <option>icloud.com</option>
-            <option>icloud.com</option>
+            <option selected disabled> 선택해주세요</option>
+            {options.map((option) => {
+              return (
+                <option value={option}>{option}</option>
+              )
+            })}
           </EmailSelect>
           <CheckButton type="submit" onClick={checkingEmail}>중복확인</CheckButton>
           </EmailSection>
-          {useSpan["email"] <= 1 
+          {useSpan.email < 1 
           ? null
-          : isEmailNull === true 
+          : emailHead === "" 
             ? <WrongSpan>필수 입력 항목입니다.</WrongSpan>
-            : !isValidEmail
-              ? <WrongSpan>이메일 형식이 올바르지 않습니다.</WrongSpan>
-              : null
+            : isValidEmail
+              ? null
+              : <WrongSpan>이메일 형식이 올바르지 않습니다.</WrongSpan>
             
           }
         </CommonForm>
@@ -352,7 +365,7 @@ export const Signup = () => {
           <H3>비밀번호</H3>
           <DescSpan>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</DescSpan>
           <PasswordInput helperText="필수 입력 항목입니다." onKeyDown={() => changeUseSpan('password')} onChange={changePassword} type="password" placeholder='비밀번호' required></PasswordInput>
-          {useSpan["password"] <= 1
+          {useSpan.password < 1
           ? null
           : password === "" 
             ? <WrongSpan>필수 입력 항목입니다.</WrongSpan>
@@ -363,7 +376,7 @@ export const Signup = () => {
         <CommonForm>
           <H3>비밀번호 확인</H3>
           <PasswordInput onKeyDown={() => changeUseSpan('passwordCheck')} onChange={changePasswordCheck} type="password" placeholder='비밀번호 확인' required></PasswordInput>
-          {useSpan["passwordCheck"] <= 1
+          {useSpan.passwordCheck < 1
           ? null
           : passwordCheck === ""
             ? <WrongSpan>확인을 위해 한 번 더 입력해주세요.</WrongSpan>
@@ -378,7 +391,7 @@ export const Signup = () => {
             <UsernameInput onKeyDown={() => changeUseSpan('username')} onChange={changeUsername} placeholder="별명(2~15자)" required></UsernameInput>
             <CheckButton onClick={checkingUsername} type="submit">중복확인</CheckButton>
           </UsernameSection>
-          {useSpan["username"] <= 1
+          {useSpan.username < 1
           ? null
           : username.length === 0
             ? <WrongSpan>필수 입력 항목입니다.</WrongSpan>
@@ -442,7 +455,7 @@ export const Signup = () => {
       </CommonForm>
       <SubmitButton onClick={clickSignup}>회원가입하기</SubmitButton>
       <LoginRedirectionSection>
-        <DescSpan >이미 아이디가 있으신가요?<LoginRedirection href="#">로그인</LoginRedirection></DescSpan>
+        <DescSpan >이미 아이디가 있으신가요?<LoginRedirection href="http://localhost:3000/login">로그인</LoginRedirection></DescSpan>
       </LoginRedirectionSection>
       </Main>
     </Div>
