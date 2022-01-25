@@ -1,5 +1,5 @@
-const models = require("../models");
-const { sign } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
 
 module.exports = {
   createToken: async (userInfo) => {
@@ -14,6 +14,7 @@ module.exports = {
     const accessToken = jwt.sign(data, process.env.ACCESS_SECRET, {
       expiresIn: "1d",
     });
+    console.log(accessToken)
     return accessToken;
   },
 };

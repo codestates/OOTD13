@@ -1,6 +1,7 @@
 const models = require("../models");
 const { verify } = require("jsonwebtoken");
 const requestUserInfoGit = require("./requestUserInfoGit");
+const req = require("express/lib/request");
 
 module.exports = {
   validateToken: async (loginMethod, token) => {
