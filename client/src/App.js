@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -25,8 +25,37 @@ import {
   FooterInput,
   Body
 } from "./App.style.js";
+import axios from 'axios';
 
 function App() {
+  const [userInfo, setUserInfo] = useState({isLogin: false, accessToken: "",})
+  
+  useEffect(()=> {
+    const url = new URL(window.location.href)
+    const authorizationCode = url.searchParams.get('code')
+    console.log(authorizationCode);
+    if (authorizationCode) {
+      getAccessToken(authorizationCode)
+    }
+  })
+  
+  const getAccessToken = async (authorizationCode) => {
+    // 받아온 authorization code로 다시 OAuth App에 요청해서 access token을 받을 수 있습니다.
+    // access token은 보안 유지가 필요하기 때문에 클라이언트에서 직접 OAuth App에 요청을 하는 방법은 보안에 취약할 수 있습니다.
+    // authorization code를 서버로 보내주고 서버에서 access token 요청을 하는 것이 적절합니다.
+    console.log("getAccessToken 실행");
+    console.log("authorizationCode = ", authorizationCode);
+    // await axios.post("http://localhost:4000/callback", {authorizationCode: authorizationCode})
+    //   .then(res => this.setState({isLogin: true, accessToken: res.data.accessToken}))
+    //   .catch((err) => console.log(err));
+    let resp = await axios.post('http://localhost:5000/user/login/github', { authorizationCode})
+
+    this.setState({
+        isLogin: true,
+        accessToken: resp.data.accessToken
+    })
+  }
+
   return (
     <Router>
         <Routes>
@@ -39,7 +68,6 @@ function App() {
       </Routes>
       <Container>
         <Header>
-          
           <Link to="/">
             <Logo src={logo} />
           </Link>

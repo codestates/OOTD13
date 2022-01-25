@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../css/common.css'
 import logo from "../public/img/logo.png"; 
 import githubLogo from "../public/img/github_logo.png"
@@ -98,22 +98,39 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validity, setValidity] = useState(true);
+  const [accessToken, setAccessToken] = useState("");
+  const [userInfo, setUserInfo] = useState({});
+  const GITHUB_ID = '24bfea583d4a595757ef';
+  const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
+  
+
+  useEffect(()=> {
+    console.log("accessToken::::", accessToken);
+    console.log("userInfo::::", userInfo);
+  },[accessToken, userInfo])
   const reDirectToGithub = () => {
-    alert("github로 이동")
+    window.location.assign(GITHUB_URL);
   }
 
-  const clickToLogin = () => {
+  const clickToLogin = async (event) => {
+    event.preventDefault();
     if(!validity || password === "" || email === "") {
       return;
     }
-    
-    const result = axios.post("http://localhost:5000/user/login", {email, password});
-    console.log("result ====", result);
-    alert(`email = ${email} password = ${password}`)
+    axios
+      .post("http://localhost:5000/user/login", {email, password})
+      .then((result) => {
+        const {accessToken, userInfo} = result.data.data; // result.data의 정보를 갖고 main페이지로 redirect 필요
+        setAccessToken(accessToken);
+        setUserInfo(userInfo);
+        alert("로그인에 성공하셨습니다.");
+        window.location.href("http://localhost:3000/")
+      })
+      .catch((err) => alert('아이디 또는 비밀번호를 확인해주세요.'));
   }
 
   const clickToSignup = () => {
-    alert("회원가입페이지로 이동")
+    window.location.href = 'http://localhost:3000/signup';
   }
 
   const changeEmail = (event) => {
@@ -138,12 +155,14 @@ export const Login = () => {
       <LoginGridNav></LoginGridNav>
       <LoginGridMain>
       <Img src={logo}></Img>
+      <form>
       <InputId type="text" onChange={changeEmail} onBlur={isValidEmail} placeholder="아이디를 입력해주세요"></InputId>
       <InputPw type="password" onChange={changePassword} placeholder="비밀번호를 입력해주세요"></InputPw>
       {!validity 
       ? <EmailValidSpan>이메일 형식이 올바르지 않습니다.</EmailValidSpan>
       : null}
       <Submit type="submit" onClick={clickToLogin}>로그인</Submit>
+      </form>
       <Signup type="submit" onClick={clickToSignup}>회원가입</Signup>
       <Span>SNS계정으로 간편 로그인/회원가입</Span>
       <a href="#">
