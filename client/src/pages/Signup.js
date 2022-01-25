@@ -195,13 +195,11 @@ export const Signup = () => {
   const options = ["naver.com", "hanmail.net", "daum.net", "gmail.com", "nate.com", "hotmail.com", "outlook.com", "icloud.com"];
 
   useEffect(()=>{
-    console.log(`emailHead = ${emailHead} emailTail = ${emailTail} email = ${email}`);
     combineEmail();
     // 패스워드 정규식 비교
     checkingPasswordRegExp();
     // 패스워드, 패스워드체크 비교
     checkingPassword();
-    console.log(isValidEmail);
   },[email, emailHead, emailTail, password, passwordCheck, username, isValidEmail]);
 
   const changeUseSpan = (val) => {
@@ -345,7 +343,7 @@ export const Signup = () => {
           <EmailSection>
             <EmailInput onChange={changeEmailHead} onKeyDown={() => changeUseSpan('email')} placeholder='이메일' required></EmailInput>
             <EmailIcon>@</EmailIcon>
-          <EmailSelect onChange={changeEmailTail}>
+          <EmailSelect onChange={changeEmailTail} >
             <option selected disabled> 선택해주세요</option>
             {options.map((option) => {
               return (

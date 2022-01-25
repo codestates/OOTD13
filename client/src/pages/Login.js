@@ -56,6 +56,7 @@ const Submit = styled.button`
   font-size: 18px;
 `;
 
+
 const Signup = styled(Submit)`
   background-color: #0199a4;
   border: 1px solid #01857c;
