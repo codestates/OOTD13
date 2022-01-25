@@ -1,5 +1,6 @@
 const models = require("../models");
 const { sign } = require("jsonwebtoken");
+const jwt = require('jsonwebtoken')
 
 module.exports = {
   createToken: async (userInfo) => {
