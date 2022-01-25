@@ -5,56 +5,238 @@ import Signup from "./pages/Signup";
 import PasswordModal from "./pages/PasswordModal";
 import Post from "./pages/Post";
 import Withdrawal from "./pages/Withdrawal";
-import Root from "./pages/Root";
+import Main from "./components/Main"
 import logo from "./images/ootd13Logo.png";
-import Main from "./pages/Main"
+import Footer from "./components/Footer"
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  BrowserRouter,
   Link,
 } from "react-router-dom";
-import {
-  Container,
-  Header,
-  Logo,
-  LoginButton,
-  SignupButton,
-  Footer,
-  FooterContainer,
-  FooterInput,
-  Body
-} from "./App.style.js";
 import axios from 'axios';
+import styled from "styled-components";
+import viewOptions from './viewsOption';
+
+const Container = styled.div` 
+  width: max(700px, auto);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  margin: 0 150px;
+  `
+;
+
+const Header = styled.div`
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.05);
+  margin: 0 150px;
+  padding: 0 0;
+  `
+;
+
+const Button = styled.button`
+  width: 80px;
+  height: 40px;
+  background-color: #36C5F0;
+  border: 1px solid #00bcf5;
+  color: white;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.12);
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  margin-left: 10px;
+  font-size: 16px;
+  `
+;
+
+const WriteButton = styled(Button)`
+  width: 150px;
+  justify-self: flex-end;
+  align-self: center;
+  background-color: rosybrown;
+  `
+;
+
+const selectButton = styled(Button)`
+  width: 150px;
+  `
+;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 33%;
+  height: 100%;
+  `
+;
+
+const Blank = styled.div`
+  height: 100%;
+  width: 33%;
+  justify-self: center;
+  margin-right: 20px;
+  `
+;
+
+const LogoDiv = styled(Blank)`
+  height: 100%;
+  display: flex;
+  align-content: flex-start;
+  justify-content: center;
+`;
+
+const Logo = styled.img`
+  width: 150px;
+  height: 100%;
+  `
+;
+
+const Body = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;  
+  `
+;
+
+const MainTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+  width: 100%;
+`;
+
+const Line = styled.hr`
+  color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1;
+  height: 1;
+  width: 100%;
+`
+const Select = styled.select`
+  width: 120px;
+  height: 50px;
+  margin: 0 15px;
+  display: inline-block;
+  box-sizing: border-box;
+  /* padding-left: 5px; */
+  border-radius: 6px;
+  border: none;
+  background-color: #DEDEDE;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgb(50,50,50);
+`
+
+const MainSelect = styled.div`
+  /* align-self: center; */
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 80%;
+`;
+const MainTag = styled.div`
+  display: flex;
+  height: 5%;
+  width: 100%;  
+  margin-left: 30px;
+`;
+
+const Tag = styled.span`
+  width: min(80px, 150px);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 0 8px;
+  margin: 0 8px 8px 0;
+  font-size: 18px;
+  font-weight: 500;
+  list-style: none;
+  border-radius: 6px;
+  font-weight: 800;
+  background-color: #7AD7F5;
+`
+
+const Cancel = styled.button`
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  width: 100px;
+  height: 30px;
+  border-radius: 6px;
+  background-color: white;
+  color: #7AD7F5;
+  font-size: 18px;
+  font-weight: 800;
+  border: 0;
+  outline: 0;
+`
+const MainDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  margin: 10px 10px;
+  background-color: beige;
+  height: 85%;
+  width: 100%;  
+`;
+
+
+
+
 
 function App() {
   const [userInfo, setUserInfo] = useState({isLogin: false, accessToken: "",})
-  
+  const [tagList, setTagList] = useState([]);
+
   useEffect(()=> {
+    // console.log(tagList);
     const url = new URL(window.location.href)
-    const authorizationCode = url.searchParams.get('code')
-    console.log(authorizationCode);
+    const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
       getAccessToken(authorizationCode)
     }
-  })
+  },)
   
-  const getAccessToken = async (authorizationCode) => {
-    // 받아온 authorization code로 다시 OAuth App에 요청해서 access token을 받을 수 있습니다.
-    // access token은 보안 유지가 필요하기 때문에 클라이언트에서 직접 OAuth App에 요청을 하는 방법은 보안에 취약할 수 있습니다.
-    // authorization code를 서버로 보내주고 서버에서 access token 요청을 하는 것이 적절합니다.
-    console.log("getAccessToken 실행");
-    console.log("authorizationCode = ", authorizationCode);
-    // await axios.post("http://localhost:4000/callback", {authorizationCode: authorizationCode})
-    //   .then(res => this.setState({isLogin: true, accessToken: res.data.accessToken}))
-    //   .catch((err) => console.log(err));
-    let resp = await axios.post('http://localhost:5000/user/login/github', { authorizationCode})
-
-    this.setState({
-        isLogin: true,
-        accessToken: resp.data.accessToken
+  const getAccessToken = (authorizationCode) => {
+    axios({
+      url: 'http://localhost:5000/user/login/github',
+      method: 'post',
+      data: {
+        authorizationCode
+      }
     })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    
+    // this.setState({
+    //     isLogin: true,
+    //     accessToken: resp.data.accessToken
+    // })
+  }
+  
+  const deleteTags = () => {
+    setTagList([]);
+  }
+
+  const addTag = (event) => {
+    event.preventDefault();
+    setTagList([...tagList, event.target.value]);
   }
 
   return (
@@ -69,38 +251,76 @@ function App() {
       </Routes>
       <Container>
         <Header>
-          <Link to="/">
+            <Blank></Blank>
+          <LogoDiv>
             <Logo src={logo} />
-          </Link>
-          <div>
+          </LogoDiv>
+          <ButtonDiv>
             <Link to="/login">
-              <LoginButton>로그인</LoginButton>
+              <Button>로그인</Button>
             </Link>
             <Link to="/signup">
-              <SignupButton>회원가입</SignupButton>
+              <Button>회원가입</Button>
+            </Link>
+            {/* <Link to="/post">
+              <selectButton>정보수정</selectButton>
             </Link>
             <Link to="/post">
-              <SignupButton>게시물</SignupButton>
+              <Button>게시물</Button>
             </Link>
             <Link to="/passwordmodal">
-              <SignupButton>비밀번호변경</SignupButton>
+              <selectButton>비밀번호변경</selectButton>
             </Link>
             <Link to="/withdrawal">
-              <SignupButton>회원탈퇴</SignupButton>
-            </Link>
-          </div>
+              <selectButton>회원탈퇴</selectButton>
+            </Link> */}
+          </ButtonDiv>
         </Header>
+        <Line></Line>
         <Body>
-          <Main />
+        <MainTop>
+          <MainSelect>
+            {viewOptions.map((view)=> {
+              return (
+              <Select key={view.subject} onChange={addTag} name={view.subject}>
+                <option selected disabled>{view.subjectName}</option>
+                {Object.keys(view.options).map((key) => {
+                  const val = view.options[key];
+                  return (
+                  <option key={key} value={val}>{val}</option>
+                  )
+                })
+              }
+              </Select>
+            )
+            })}
+          </MainSelect>
+          <WriteButton>글쓰기</WriteButton>
+        </MainTop>
+        <MainTag>
+        {tagList.length <= 1 
+          ? null
+          : tagList.map((tag) => {
+            return (
+              <Tag key={tag}>{tag}</Tag>
+            )
+          })}
+          {tagList.length <= 1
+          ? null
+          : <Cancel type="button" onClick={deleteTags}>초기화</Cancel>
+          }
+        </MainTag>
+        <MainDiv>
+          <Main></Main>
+          <Main></Main>
+          <Main></Main>
+          <Main></Main>
+          <Main></Main>
+          <Main></Main>
+        </MainDiv>
         </Body>
-        <FooterContainer>
-          <div></div>
-        </FooterContainer>
-        <Footer>
-          <FooterInput>
-            내용기입
-          </FooterInput>
-        </Footer>
+        <Line></Line>
+        <Footer></Footer>
       </Container>
     </Router>
   );
