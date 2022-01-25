@@ -2,7 +2,7 @@ const models = require("../models");
 
 module.exports = {
   createUser: async ({ loginMethod, email, username, password }) => {
-    if (!loginMethod) {
+    if (loginMethod === "0") {
       await models.user.create({
         email: email,
         username: username,
@@ -10,11 +10,13 @@ module.exports = {
         login_method: 0,
       });
     }
-    await models.user.create({
-      email: email,
-      login_method: loginMethod,
-      username: username,
-      password: null,
-    });
+    if (loginMethod === "1") {
+      await models.user.create({
+        email: email,
+        login_method: loginMethod,
+        username: username,
+        password: null,
+      });
+    }
   },
 };

@@ -3,11 +3,17 @@ const findUser = require("./../../modules/findUser");
 
 module.exports = async (req, res) => {
   const { email, password } = req.body;
-  const userInfo = await findUser({ email:email });
-  if (email === userInfo.email && password === userInfo.password) {
-    return res.status(200).json({
+
+  try {
+    const userInfo = await findUser({
+      email: email,
+      loginMethod: 0,
+      password: password,
+    });
+    if (!userInfo) return res.status(404).send({ response: "login err" });
+    res.status(200).json({
       data: {
-        accessToken: createToken(userInfo),
+        accessToken: createToken.createToken(userInfo),
         userInfo: {
           email: userInfo.email,
           username: userInfo.username,
@@ -16,6 +22,7 @@ module.exports = async (req, res) => {
         },
       },
     });
+  } catch {
+    return res.status(404).send({ response: "login err" });
   }
-  return res.status(404).send({response: "login err" });
 };
