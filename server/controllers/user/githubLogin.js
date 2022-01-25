@@ -4,20 +4,34 @@ const requestUserInfoGit = require("./../../modules/requestUserInfoGit");
 const findUser = require("./../../modules/findUser");
 
 module.exports = async (req, res) => {
-  const token = await requestTokenGit(req.body.authorizationCode);
-  const gitUserInfo = await requestUserInfoGit(token);
-  const userInfo = await findUser({ email: gitUserInfo.email });
-  if (!token) {
-    return res.status(401).send({ response: "invalid code" });
-  }
-  if (!userInfo) {
-    await createUser({
-      loginMethod: 1,
-      email: (await gitUserInfo).email,
-      username: (await gitUserInfo).username,
-    });
-    return res.status(201).send({
-      response: "created",
+  try {
+    const token = await requestTokenGit(req.body.authorizationCode);
+    const gitUserInfo = await requestUserInfoGit(token);
+    const userInfo = await findUser({ email: gitUserInfo.email, loginMethod: '1' });
+
+    if (!userInfo) {
+      await createUser({
+        loginMethod: 1,
+        email: gitUserInfo.email,
+        username: gitUserInfo.username,
+      });
+      const newUserInfo = await findUser({ email: gitUserInfo, loginMethod: '1' });
+      return res.status(201).send({
+        response: "created",
+        data: {
+          userInfo: {
+            email: newUserInfo.email,
+            username: newUserInfo.username,
+            createdAt: newUserInfo.createdAt,
+            loginMethod: newUserInfo.login_method,
+          },
+          accessToken: token
+        },
+      });
+    }
+
+    return res.status(200).send({
+      response: "ok",
       data: {
         userInfo: {
           email: userInfo.email,
@@ -25,16 +39,10 @@ module.exports = async (req, res) => {
           createdAt: userInfo.createdAt,
           loginMethod: userInfo.login_method,
         },
+        accessToken: token
       },
     });
+  } catch {
+    return res.status(401).send({ response: "invalid code" });
   }
-  return res.status(200).send({
-    response: "ok",
-    data: {
-      email: userInfo.email,
-      username: userInfo.username,
-      createdAt: userInfo.createdAt,
-      loginMethod: userInfo.login_method,
-    },
-  });
 };
