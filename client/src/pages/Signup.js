@@ -299,11 +299,15 @@ export const Signup = () => {
   const clickSignup = () => {
     if(!isValidEmail || !isValidPassword || !isEmailChecked || !isSamePassword || !isUsernameChecked
       || !checkedItems.includes('use' &&'age' &&'agree')) {
+      alert("필수 항목을 입력바랍니다.");
       return;
     } else {
       axios
         .post("http://localhost:5000/user/signup", {email, password, username})
-        .then((res) => alert("회원가입에 성공했습니다."))
+        .then((res) => {
+          alert("회원가입에 성공했습니다.");
+          window.location.href = "http://localhost:3000"
+        })
         .catch((err) => console.log(err));
     }
   }
