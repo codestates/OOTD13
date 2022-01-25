@@ -1,24 +1,79 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import PasswordModal from "./pages/PasswordModal";
+import Post from "./pages/Post";
+import Withdrawal from "./pages/Withdrawal";
+import Root from "./pages/Root";
+import logo from "./images/ootd13Logo.png";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  BrowserRouter,
+  Link,
+} from "react-router-dom";
+import {
+  Container,
+  Header,
+  Logo,
+  LoginButton,
+  SignupButton,
+  Footer,
+  FooterContainer,
+  FooterInput,
+  Body
+} from "./App.style.js";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Routes>
+          <Route path="/" exact={true} ></Route>
+          <Route path="/login" element={<Login/>}></Route>
+          <Route path="/signup" element={<Signup/>}></Route>
+          <Route path="/post" element={<Post/>}></Route>
+          <Route path="/passwordmodal" element={<PasswordModal/>}></Route>
+          <Route path="/withdrawal" element={<Withdrawal/>}></Route>
+      </Routes>
+      <Container>
+        <Header>
+          
+          <Link to="/">
+            <Logo src={logo} />
+          </Link>
+          <div>
+            <Link to="/login">
+              <LoginButton>로그인</LoginButton>
+            </Link>
+            <Link to="/signup">
+              <SignupButton>회원가입</SignupButton>
+            </Link>
+            <Link to="/post">
+              <SignupButton>게시물</SignupButton>
+            </Link>
+            <Link to="/passwordmodal">
+              <SignupButton>비밀번호변경</SignupButton>
+            </Link>
+            <Link to="/withdrawal">
+              <SignupButton>회원탈퇴</SignupButton>
+            </Link>
+          </div>
+        </Header>
+        <Body>
+          바디입니다.
+        </Body>
+        <FooterContainer>
+          <div></div>
+        </FooterContainer>
+        <Footer>
+          <FooterInput>
+            내용기입
+          </FooterInput>
+        </Footer>
+      </Container>
+    </Router>
   );
 }
 

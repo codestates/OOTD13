@@ -12,7 +12,7 @@ module.exports = {
       {
         username: 'parkhacker',
         email:'parkhacker@github.com',
-        password:null,
+        password:"1234",
         login_method:0
       },
       {
