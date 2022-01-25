@@ -10,10 +10,6 @@ module.exports = {
       },
       user_id: {
         type:Sequelize.INTEGER,
-        references:{
-          model:'users',
-          key:'id'
-        }
       },
       image_src: {
         type: Sequelize.STRING,
@@ -29,10 +25,6 @@ module.exports = {
       },
       content_id: {
         type:Sequelize.INTEGER,
-        references:{
-          model:'contents',
-          key:'id',
-        }
       },
       createdAt: {
         type: 'TIMESTAMP',

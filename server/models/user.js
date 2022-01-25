@@ -11,10 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       user.hasMany(models.article,{
-        onDelete:"CASCADE",
-        onUpdate:"CASCADE",
         foreignKey:'user_id',
-        sourceKey:'id'
       })
     }
   }

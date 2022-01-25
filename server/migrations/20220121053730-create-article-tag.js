@@ -10,19 +10,9 @@ module.exports = {
       },
       article_id: {
         type:Sequelize.INTEGER,
-        references:{
-          model:'articles',
-          key:'id',
-          onDelete: 'CASCADE'
-        }
       },
       tag_id: {
         type:Sequelize.INTEGER,
-        references: {
-          model:'tags',
-          key:'id',
-          onDelete: 'CASCADE'
-        }
       },
       createdAt: {
         type: 'TIMESTAMP',
