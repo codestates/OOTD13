@@ -97,22 +97,17 @@ const EmailValidSpan = styled.span`
 `
 
 
-export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessToken, userInfo}) => {
+export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessToken, userInfo, reDirectToGithub}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validity, setValidity] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
-  const GITHUB_ID = '24bfea583d4a595757ef';
-  const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
   
 
   useEffect(()=> {
     console.log("accessToken::::", accessToken);
     console.log("userInfo::::", userInfo);
   },[accessToken, userInfo])
-  const reDirectToGithub = () => {
-    window.location.assign(GITHUB_URL);
-  }
 
   const clickToLogin = async (event) => {
     event.preventDefault();
