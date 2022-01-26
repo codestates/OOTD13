@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
       password: password,
     });
     if (!userInfo) return res.status(404).send({ response: "login err" });
-    res.status(200).json({
+    res.cookie('jwt',await createToken.createToken(userInfo)).status(200).json({
       data: {
         accessToken: await createToken.createToken(userInfo),
         userInfo: {

@@ -285,6 +285,23 @@ function App() {
     openPostModal();
   },[selectedPost])
 
+
+  
+  useEffect(() =>{
+    const isAuth = () =>{
+      console.log('닝기리야닝기리야')
+      axios.get('http://localhost:5000/user/auth')
+      .then((result)=>{
+        setIsLogin(true)
+        console.log('씨이이이이이이바아아아아아아알')
+      }).catch(()=>{
+        console.log('아니 왜 안됨?')
+      })
+    }
+    isAuth();
+    
+  })
+
   const renderMain = () => {
     const {order, page, sex, weather, season, style}= queryOptions;
     axios({

@@ -11,5 +11,6 @@ router.post("/signup",controllers.signUp);
 router.post('/emailcheck',controllers.emailCheck);
 router.post('/namecheck',controllers.nameCheck);
 router.delete('/withdrawal',controllers.withDrawal);
+router.get('/auth',controllers.auth)
 
 module.exports = router;
