@@ -104,20 +104,22 @@ const Viewmore = styled.a`
   box-sizing: border-box;
 `
 
-export const Post = () => {
+export const Post = (props) => {
+  const {postId, username, imgSrc, like, view, tag} = props;
+
   return (
     <Div>
       <Main>
-        <Img src={dummyImg}></Img>
+        <Img src={imgSrc}></Img>
         <Inform class="post-form-inform">
-          <Username class="post-form-username">주형</Username>
+          <Username class="post-form-username">{username}</Username>
           <Section>
             <Title>조회수</Title>
-            <Number class="post-form-views-num">932</Number>
+            <Number class="post-form-views-num">{view}</Number>
           </Section>
           <Section>
             <Title>좋아요</Title>
-            <Number class="post-form-like-num">32</Number>
+            <Number class="post-form-like-num">{like}</Number>
           </Section>
         </Inform>
         <Line />

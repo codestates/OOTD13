@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
-
+import PostModal from "./PostModal";
 const Div = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,13 +25,25 @@ const Inform = styled.span`
   justify-content: center;
   width: 100%;
   height: 50px;
+  font-weight: 700;
   color: #C6BBAA;
 `
 
-function Main({username, imgSrc, like, view, tag}) { 
+function Main({postId, username, imgSrc, like, view, tag}) { 
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+
+  const openPostModal = () => {
+    setIsPostModalOpen(!isPostModalOpen);
+  }
+
   return (
     <Div>
-      <Img src={imgSrc}></Img>
+    {!isPostModalOpen 
+      ? null
+      : <div>
+      <PostModal props={postId, username, imgSrc, like, view, tag} />
+      </div>}
+      <Img key={postId} src={imgSrc} onClick={openPostModal}></Img>
       <Inform>조회수 {view} · 좋아요 {like}</Inform>
     </Div>
   )
