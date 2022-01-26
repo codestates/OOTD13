@@ -406,12 +406,13 @@ function App() {
     setAccessToken(token);
   }
   
-  const clickToWrite = () => {
-    if(!userInfo.isLogin) {
-      window.location.href="http://localhost:3000/login"
-    }
-      window.location.href="http://localhost:3000/login"
-  }
+  // const clickToWrite = () => {
+  //   if(!isLogin) {
+  //     window.location.href="http://localhost:3000/login"
+  //   } else{
+  //     window.location.href="http://localhost:3000/newpost"
+  //   }
+  // }
   
   const reDirectToGithub = () => {
     window.location.assign(GITHUB_URL);
@@ -484,7 +485,9 @@ function App() {
             )})
             }
           </MainSelect>
-          <WriteButton onClick={clickToWrite}>글쓰기</WriteButton>
+          <Link to={isLogin?"/newpost":"/login"}>
+            <WriteButton>글쓰기</WriteButton>
+          </Link>
         </MainTop>
         <MainTag>
         {Object.keys(queryOptions).map((option)=> {
