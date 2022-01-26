@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import {Redirect} from 'react-router-dom'
 var AWS = require('aws-sdk/dist/aws-sdk-react-native');
 
 const ImgBox = styled.div`
@@ -69,6 +70,7 @@ export const NewPost = ({userInfo, accessToken}) => {
   const [season,setSeason] = useState("")
   const [style,setStyle] = useState("")
   const [previewSrc,setPreviewSrc] = useState(null)
+  const [finish,setFinish] = useState(false)
 
   const sexTag = {'남성':'1','여성':'2'}
   const weatherTag = {'비 오는 날':'1','흐린 날':'2','눈 오는 날':'3','맑은 날':'4'}
@@ -130,12 +132,12 @@ export const NewPost = ({userInfo, accessToken}) => {
           style:styleTag[style]
         }
       }).then(()=>{
-        window.location.href="http://localhost:3000"
+       // window.location.href="http://localhost:3000"
+       alert("작성이 완료되었습니다")
+       setFinish(true)
       })
     }
   }
-  console.log(userInfo,'@@@@@@@@')
-  console.log(accessToken,'!!!!!!!!!!!!')
 
   const shirtsHandler = (e) =>{
     setShirts(e.target.value)
@@ -167,6 +169,8 @@ export const NewPost = ({userInfo, accessToken}) => {
 
   return (
     <Div>
+      {finish
+      ?<Redirect to='/'></Redirect> : null}
       <ImgBox>
         <ImgPreview src={previewSrc}></ImgPreview>
         <ImgSrc type="file" onChange={imageHandler}></ImgSrc>

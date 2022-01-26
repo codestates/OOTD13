@@ -406,14 +406,6 @@ function App() {
     setAccessToken(token);
   }
   
-  // const clickToWrite = () => {
-  //   if(!isLogin) {
-  //     window.location.href="http://localhost:3000/login"
-  //   } else{
-  //     window.location.href="http://localhost:3000/newpost"
-  //   }
-  // }
-  
   const reDirectToGithub = () => {
     window.location.assign(GITHUB_URL);
   }
