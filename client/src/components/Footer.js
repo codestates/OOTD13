@@ -36,9 +36,9 @@ function Footer() {
     // <FooterContainer>
     // </FooterContainer>
     <FooterDiv>
-      <GithubList>
+      {/* <GithubList>
 
-      </GithubList>
+      </GithubList> */}
       © OOTD13, Co., Ltd.. All Rights Reserved
     </FooterDiv>
   )
