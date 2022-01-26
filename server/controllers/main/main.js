@@ -42,7 +42,7 @@ module.exports = {
                 articles.sort((a, b) => {
                     return a[sorting[req.query.order]] - b[sorting[req.query.order]];
                 })
-                if (order === 'old' || order === 'popular' || order === 'like') articles.reverse();
+                if (order === 'recent' || order === 'popular' || order === 'like') articles.reverse();
 
                 const result = articles.slice((page - 1) * 6, page * 6);
                 const realResult = await Promise.all(result.map(async (article) => {
