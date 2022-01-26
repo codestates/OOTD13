@@ -140,7 +140,7 @@ const Cancel = styled.button`
   align-items: flex-end;
   align-content: center;
   width: auto;
-  height: 2rem;
+  height: 1.5rem;
   color: white;
   margin: 0 10px 10px 0;
   background-color: gray;
@@ -148,6 +148,7 @@ const Cancel = styled.button`
   font-size: 16px;
   font-weight: 600;
   box-sizing: border-box;
+  border: none;
 `
 
 export const Post = ({selectedPost, openPostModal}) => {

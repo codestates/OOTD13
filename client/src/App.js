@@ -29,6 +29,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 150px;
+  background-color: burlywood;
+  background-color: rgba(100,100,100,0.001);
   `
 ;
 
@@ -134,19 +136,20 @@ const Line = styled.hr`
   width: 100%;
 `
 const Select = styled.select`
-  width: 120px;
+  width: 100px;
   height: 50px;
   margin: 0 15px;
   display: inline-block;
   box-sizing: border-box;
-  /* padding-left: 5px; */
+  padding-left: 10px;
   border-radius: 6px;
   border: none;
-  background-color: #DEDEDE;
+  background-color: #C8C8C8;
   height: 50px;
-  font-size: 18px;
-  font-weight: 500;
-  color: rgb(50,50,50);
+  font-size: 19px;
+  font-weight: 700;
+  color: rgb(60,60,60);
+  
 `
 
 const MainSelect = styled.div`
@@ -155,14 +158,14 @@ const MainSelect = styled.div`
   align-items: center;
   height: 100%;
   width: 80%;
-  background-color: orange;
+  /* background-color: orange; */
 `;
 const MainTag = styled.div`
   display: flex;
   height: 5%;
   width: 100%;  
   margin-left: 30px;
-  background-color: paleturquoise;
+  /* background-color: paleturquoise; */
 `;
 
 const Tag = styled.span`
@@ -208,17 +211,32 @@ const Username = styled.span`
   border-radius: 6px;
   /* display: flex; */
 `
+// const MainDiv = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+//   align-content: center;
+//   margin: 10px 10px;
+//   /* background-color: beige; */
+//   height: 85%;
+//   width: 100%;  
+// `;
+
 const MainDiv = styled.div`
-  display: flex;
+  display: grid;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  grid-template-columns: repeat(3, minmax(400px, 1fr));
+  grid-template-rows: repeat(2, 1fr);
+  place-items: center;
   align-content: center;
   margin: 10px 10px;
-  background-color: beige;
+  /* background-color: beige; */
   height: 85%;
-  width: 100%;  
+  width: 100%;
+  gap: 10px 20px;
+  /* grid-auto-flow: dense; */
 `;
-
 
 
 function App() {
@@ -338,7 +356,6 @@ function App() {
   }
 
   const openWdModal = () => {
-    // e.stopPropagation();
     setIsWdModalOpen(!isWdModalOpen);
   }
 

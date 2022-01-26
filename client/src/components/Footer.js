@@ -7,6 +7,8 @@ const FooterDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-weight: 500;
+  color: gray;
 `
 ;
 
