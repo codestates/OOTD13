@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   try {
     const token = await requestTokenGit(req.body.authorizationCode);
     const gitUserInfo = await requestUserInfoGit(token);
-    try{
+    try {
       const userInfo = await findUser({ email: gitUserInfo.email, loginMethod: '1' });
       return res.status(200).send({
         response: "ok",
@@ -21,13 +21,13 @@ module.exports = async (req, res) => {
           accessToken: token
         },
       });
-    }catch{
+    } catch {
       await createUser.createUser({
-        loginMethod: 1,
+        loginMethod: '1',
         email: gitUserInfo.email,
         username: gitUserInfo.username,
       });
-      const newUserInfo = await findUser({ email: gitUserInfo, loginMethod: '1' });
+      const newUserInfo = await findUser({ email: gitUserInfo.email, loginMethod: '1' });
       return res.status(201).send({
         response: "created",
         data: {
