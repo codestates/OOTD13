@@ -4,6 +4,7 @@ import logo from "../public/img/logo.png";
 import githubLogo from "../public/img/github_logo.png"
 import styled from 'styled-components';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom'
 
 const LoginGrid = styled.div`
 display: flex;
@@ -32,6 +33,7 @@ const LoginGridMain = styled.div`
 const Img = styled.img`
   width: 150px;
   align-content: center;
+  cursor: pointer;
 `;
 
 const InputId = styled.input`
@@ -95,12 +97,11 @@ const EmailValidSpan = styled.span`
 `
 
 
-export const Login = () => {
+export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessToken, userInfo}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validity, setValidity] = useState(true);
-  const [accessToken, setAccessToken] = useState("");
-  const [userInfo, setUserInfo] = useState({});
+  const [isLogin, setIsLogin] = useState(false);
   const GITHUB_ID = '24bfea583d4a595757ef';
   const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
   
@@ -122,16 +123,22 @@ export const Login = () => {
       .post("http://localhost:5000/user/login", {email, password})
       .then((result) => {
         const {accessToken, userInfo} = result.data.data; // result.data의 정보를 갖고 main페이지로 redirect 필요
-        setAccessToken(accessToken);
-        setUserInfo(userInfo);
+        changeAccessToken(accessToken);
+        changeUserInfo(userInfo);
         alert("로그인에 성공하셨습니다.");
-        window.location.href("http://localhost:3000/")
+        localStorage.setItem("key", accessToken);
+        setIsLogin(!isLogin);
+        accessLogin();
       })
       .catch((err) => alert('아이디 또는 비밀번호를 확인해주세요.'));
   }
 
   const clickToSignup = () => {
     window.location.href = 'http://localhost:3000/signup';
+  }
+  
+  const clickToHome = () => {
+    window.location.href = 'http://localhost:3000/';
   }
 
   const changeEmail = (event) => {
@@ -153,9 +160,15 @@ export const Login = () => {
   }
   return (
     <LoginGrid>
+      {!isLogin 
+      ? null
+      : <div>
+      <Redirect to="/"></Redirect>
+      </div>
+      }
       <LoginGridNav></LoginGridNav>
       <LoginGridMain>
-      <Img src={logo}></Img>
+      <Img src={logo} onClick={clickToHome}></Img>
       <form>
       <InputId type="text" onChange={changeEmail} onBlur={isValidEmail} placeholder="아이디를 입력해주세요"></InputId>
       <InputPw type="password" onChange={changePassword} placeholder="비밀번호를 입력해주세요"></InputPw>

@@ -200,11 +200,17 @@ export const Signup = () => {
     checkingPasswordRegExp();
     // 패스워드, 패스워드체크 비교
     checkingPassword();
+    usernameRegExp();
   },[email, emailHead, emailTail, password, passwordCheck, username, isValidEmail]);
 
   const changeUseSpan = (val) => {
     setUseSpan(Object.assign({}, useSpan, useSpan[val] = useSpan[val] + 1));
   }
+
+  const usernameRegExp = () => {
+    if(username.length > 8) return false;
+    else return true;
+  };
 
   const handleCheckChange = (checked, val) => {
     if (checked) {
@@ -388,7 +394,7 @@ export const Signup = () => {
         </CommonForm>
         <CommonForm>
           <H3>닉네임</H3>
-          <DescSpan>다른 유저와 겹치지 않는 별명을 입력해주세요. (2~15자)</DescSpan>
+          <DescSpan>다른 유저와 겹치지 않는 별명을 입력해주세요. (2~8자)</DescSpan>
           <UsernameSection>
             <UsernameInput onKeyDown={() => changeUseSpan('username')} onChange={changeUsername} placeholder="별명(2~15자)" required></UsernameInput>
             <CheckButton onClick={checkingUsername} type="submit">중복확인</CheckButton>
@@ -397,9 +403,10 @@ export const Signup = () => {
           ? null
           : username.length === 0
             ? <WrongSpan>필수 입력 항목입니다.</WrongSpan>
-            : username.length === 1
-              ? <WrongSpan>2자 이상 입력해주세요.</WrongSpan>
-              : null}
+            : username.length === 1 || username.length > 8
+              ? <WrongSpan>별명은 2자~8자 사이로 입력해주세요.</WrongSpan>
+              : null
+          }
         </CommonForm>
         <CommonForm>
           <H3>약관동의</H3>
