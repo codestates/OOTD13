@@ -10,12 +10,8 @@ module.exports = async (authorizationCode) => {
     client_secret: ClientSecret,
     code: authorizationCode,
   };
-  try {
-    const token = await axios.post(url, param, {
+  const token = await axios.post(url, param, {
       headers: { Accept: "application/json" },
-    });
-    return token.data.access_token;
-  } catch {
-    return null;
-  }
+  });
+  return token.data.access_token;
 };
