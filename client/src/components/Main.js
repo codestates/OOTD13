@@ -5,8 +5,8 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   width: auto;
-  height: 440px;
-  margin: 10px 20px 10px 20px;
+  height: 420px;
+  margin: 5px 20px 5px 20px;
   /* background-color: bisque; */
 `
 
@@ -16,8 +16,8 @@ const Img = styled.img`
   justify-self: center;
   display: block;
   margin: 0 auto;
-  width: min(auto, 400px);
-  height: 400px;
+  width: min(auto, 380px);
+  height: 380px;
   cursor: pointer;
   &:hover {
     transform: scale(1.05);

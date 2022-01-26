@@ -19,6 +19,8 @@ import styled from "styled-components";
 import viewOptions from './viewsOption';
 import noImage from "./images/loading.png"
 import NewPost from './pages/NewPost';
+import Pagination from './components/Pagination';
+import loadingImg from "./images/loading.gif";
 
 const Container = styled.div` 
   width: max(700px, auto);
@@ -28,7 +30,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   /* margin: 0 150px; */
-  background-color: burlywood;
+  /* background-color: burlywood; */
   background-color: rgba(100,100,100,0.001);
   `
 ;
@@ -118,6 +120,7 @@ const Body = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;  
+  /* background-color: violet; */
   `
 ;
 
@@ -238,13 +241,14 @@ const MainDiv = styled.div`
   align-content: center;
   margin: 10px 10px;
   /* background-color: beige; */
-  height: 85%;
+  height: 75%;
   width: 100%;
   gap: 10px 20px;
   /* grid-auto-flow: dense; */
 `;
 
 const NoPost = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-items: flex-end;
@@ -264,6 +268,7 @@ function App() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   const GITHUB_ID = "24bfea583d4a595757ef";
   const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
@@ -272,7 +277,8 @@ function App() {
     setIsLoading(true);
     renderMain();
     setIsLoading(false);
-    console.log("selectedPost ========", selectedPost)
+    console.log("queryOptions =======", queryOptions);
+    console.log("selectedPost ========", selectedPost);
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
@@ -281,7 +287,6 @@ function App() {
   },[userInfo, isLogin, queryOptions, tagList])
 
   useEffect(()=> {
-    console.log("selectedPost====", selectedPost);
     openPostModal();
   },[selectedPost])
 
@@ -420,6 +425,19 @@ function App() {
     setIsPostModalOpen(!isPostModalOpen);
   }
 
+  const getPage = (newPage) => {
+    if(newPage < 1) newPage = 1;
+    setPage(newPage);
+    newPaging(newPage);
+  }
+
+  const newPaging = (newPage) => {
+    console.log("newPaging 시작!");
+    const object = JSON.parse(JSON.stringify(queryOptions));
+    object.page = newPage;  
+    setQueryOptions(object);
+  }
+
   return (
     <Router>
         <Switch>
@@ -501,14 +519,17 @@ function App() {
           ? null
           : <Cancel type="button" onClick={deleteTags}>초기화</Cancel>
         }
-
         </MainTag>
-        {postList.length === 0
+        {isLoading
+        ? <NoPost>
+          <img src={loadingImg}></img>
+        </NoPost>
+        : postList.length === 0
         ? <NoPost>
           <img src={noImage} width="300px" height="300px"></img>
           <span>찾으시는 결과가 없습니다.ㅠㅠ </span>
-        </NoPost>
-        :<MainDiv>
+          </NoPost>
+        : <MainDiv>
         {postList.map((post) => 
         {
           return (
@@ -523,7 +544,8 @@ function App() {
           )
         })}
       </MainDiv>
-      }  
+      }
+      <Pagination page={page} getPage={getPage}></Pagination>
         </Body>
         <Footer></Footer>
       </Container>
