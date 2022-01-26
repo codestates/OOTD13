@@ -230,11 +230,14 @@ function App() {
   const [isPwModalOpen, setIsPwModalOpen] = useState(false);
   const [isWdModalOpen, setIsWdModalOpen] = useState(false);
   const [postList, setPostList] = useState([]);
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState({});
   const GITHUB_ID = "24bfea583d4a595757ef";
   const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
   
   useEffect(()=> {
     renderMain();
+    console.log("selectedPost ========", selectedPost)
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
@@ -242,11 +245,13 @@ function App() {
     }
   },[userInfo, isLogin, queryOptions, tagList])
 
+  useEffect(()=> {
+    console.log("selectedPost====", selectedPost);
+    openPostModal();
+  },[selectedPost])
+
   const renderMain = () => {
-    console.log("Object.values(queryOptions) ===", Object.values(queryOptions));
     const {order, page, sex, weather, season, style}= queryOptions;
-    console.log("{order, page, sex, weather, season, style} =====", {order, page, sex, weather, season, style});
-    console.log("Object.values(page) ====", Object.keys(page));
     axios({
       url: "http://localhost:5000/main",
       method: "get",
@@ -288,13 +293,14 @@ function App() {
         accessLogin(); // Login 처리
       })
       .catch((err) => console.log(err));
-    
-    // this.setState({
-    //     isLogin: true,
-    //     accessToken: resp.data.accessToken
-    // })
   }
   
+  const selectPost = (postId) => {
+    const getPost = postList.filter((post)=> post.postId === postId);
+    console.log("selectPost 시작~!");
+    console.log("getPost===", getPost);
+    setSelectedPost(getPost);
+  }
   const deleteTags = () => {
     setQueryOptions({order: {}, page: 1, sex: {}, weather: {}, season: {}, style: {}});
     setTagList([]);
@@ -341,7 +347,7 @@ function App() {
 
     if(!isLogin) {
       window.location.href = "http://localhost:3000"
-    }
+    } 
 
     axios({
       url: `http://localhost:5000/user/logout?loginmethod=${loginMethod}`,
@@ -377,13 +383,16 @@ function App() {
     window.location.assign(GITHUB_URL);
   }
 
+  const openPostModal = () => {
+    setIsPostModalOpen(!isPostModalOpen);
+  }
+
   return (
     <Router>
         <Switch>
           <Route path="/" exact={true}></Route>
           <Route path="/login"><Login reDirectToGithub={reDirectToGithub} accessLogin={accessLogin} changeUserInfo={changeUserInfo} changeAccessToken={changeAccessToken} accessToken={accessToken} userInfo={userInfo}/></Route>
           <Route path="/signup"><Signup reDirectToGithub={reDirectToGithub}/></Route>
-          <Route path="/post"><PostModal/></Route>
       </Switch>
       <Container>
           {!isPwModalOpen 
@@ -394,6 +403,9 @@ function App() {
           ? null
           : <Withdrawal resetUserInfo={resetUserInfo} email={userInfo.email} accessToken={accessToken} loginMethod={userInfo.loginMethod} openWdModal={openWdModal}></Withdrawal>
           }
+          {!isPostModalOpen || Object.keys(selectedPost).length === 0
+          ? null
+          : <PostModal openPostModal={openPostModal} selectedPost={selectedPost} />}
         <Header>
             <Blank></Blank>
           <LogoDiv>
@@ -416,24 +428,6 @@ function App() {
           <SelectButton onClick={openWdModal}>회원탈퇴</SelectButton>
           <SelectButton onClick={clickToLogout}>로그아웃</SelectButton>
           </div>
-          // <div className="navi-div">
-          //     <nav>
-          //       <ul className="ul-dept1">
-          //         <li className="li-dept1">
-          //           <a className="a-dept1">정보수정</a>
-          //           <ul className="ul-dept2">
-          //             <li className="li-dept2">
-          //               <a className="a-dept2" onClick={openPwModal}>비밀번호변경</a>
-          //             </li>
-          //             <li className="li-dept2">
-          //               <a className="a-dept2"onClick={openWdModal}>회원탈퇴</a>
-          //             </li>
-          //           </ul>
-          //         </li>
-          //       </ul>
-          //     </nav>
-            // <SelectButton onClick={clickToLogout}>로그아웃</SelectButton>
-            // </div>  
           } 
           </ButtonDiv>
         </Header>
@@ -459,15 +453,7 @@ function App() {
           <WriteButton onClick={clickToWrite}>글쓰기</WriteButton>
         </MainTop>
         <MainTag>
-        {/* {tagList.length <= 1 
-          ? null
-          : tagList.map((tag) => {
-            return (
-              <Tag key={tag}>{tag}</Tag>
-            )
-          })} */}
         {Object.keys(queryOptions).map((option)=> {
-          console.log("key ===", Object.values(queryOptions[option]).filter((val) => val !== ""))
           if(option === 'page') return;
           return Object.values(queryOptions[option]).map((value) => {
             if(value === "") return;
@@ -490,11 +476,11 @@ function App() {
             <Main 
               key={post.postId}
               postId={post.postId}
-              username={post.username} 
               imgSrc={post.imageSrc} 
               like={post.like} 
               view={post.view}
-              tag={post.tag}></Main>
+              selectPost={selectPost}>
+            </Main>
             )
           })}
         </MainDiv>
