@@ -4,18 +4,25 @@ import styled from "styled-components";
 const Div = styled.div`
   display: flex;
   flex-direction: column;
-  width: 420px;
+  width: auto;
   height: 440px;
   margin: 10px 20px 10px 20px;
   /* background-color: bisque; */
 `
+
 const Img = styled.img`
   align-self: flex-start;
+  border-radius: 10px;
   justify-self: center;
   display: block;
   margin: 0 auto;
-  width: 400px;
+  width: min(auto, 400px);
   height: 400px;
+  cursor: pointer;
+  &:hover {
+    width: 410px;
+    height: 410px;
+  }
   /* background-color: black; */
 `
 
@@ -25,8 +32,8 @@ const Inform = styled.span`
   justify-content: center;
   width: 100%;
   height: 50px;
-  font-weight: 6  00;
-  color: #C6BBAA;
+  font-weight: 500;
+  color: gray;
 `
 
 function Main({postId, imgSrc, like, view, selectPost}) { 
@@ -34,7 +41,7 @@ function Main({postId, imgSrc, like, view, selectPost}) {
   return (
     <Div>
       <Img key={postId} src={imgSrc} onClick={()=> {selectPost(postId)}}></Img>
-      <Inform>조회수 {view} · 좋아요 {like}</Inform>
+      <Inform>조회수 {view}{" "}·{" "}좋아요 {like}</Inform>
     </Div>
   )
 }
