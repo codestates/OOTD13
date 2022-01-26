@@ -103,6 +103,7 @@ const Viewmore = styled.a`
   font-weight: 700;
   box-sizing: border-box;
 `
+
 export const Post = () => {
   return (
     <Div>

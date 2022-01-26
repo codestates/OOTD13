@@ -3,10 +3,16 @@ import { useState } from 'react';
 import styled from "styled-components";
 
 const Div = styled.div`
+  background-color: rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  /* padding: 50px; */
+  margin: 0 0;
+  border-radius: 20px;  
+  cursor: cursor;
+  z-index: 999;
   width: 100vw;
   height: 100vh;
 `
@@ -59,27 +65,30 @@ const Cancel = styled(Button)`
   border: 1px solid gray;
   color: black;
 `
-export const Withdrawal = () => {
+export const Withdrawal = ({resetUserInfo, email, accessToken, loginMethod, openWdModal}) => {
   // 추후 props 처리해야됨.
-  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQG5hdmVyLmNvbSIsInVzZXJuYW1lIjoi6rWs6rWsIiwicGFzc3dvcmQiOiIxMjM0IiwibG9naW5fbWV0aG9kIjowLCJjcmVhdGVkQXQiOiIyMDIyLTAxLTI1VDA2OjQ0OjUwLjAwMFoiLCJpYXQiOjE2NDMwOTc1ODcsImV4cCI6MTY0MzE4Mzk4N30.XAgDOukIPgNBK3IPXL19m-yztF0xVJcZEAgJdECKeU0";
-  const email = "qwp0905@github.com";
-  const LOGIN_METHOD = 1;
 
   const clickToSubmit = () => {
     axios({
-      url: `http://localhost:5000/user/withdrawal?loginmethod=${LOGIN_METHOD}`,
+      url: `http://localhost:5000/user/withdrawal?loginmethod=${loginMethod}`,
       method: "delete",
       headers: {authorization: accessToken},
       data: {email}
     })
     .then((res) => {
       alert("회원탈퇴가 성공적으로 되었습니다.");
-      window.location.href = "http://localhost:3000"
+      openWdModal();
+      resetUserInfo();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      alert("정상적으로 처리되지 않았습니다."); 
+      openWdModal();
+      resetUserInfo();
+    });
   }
   const clickToRedirect = () => {
-    window.location.href = "http://localhost:3000"
+    openWdModal();
   }
 
   return (

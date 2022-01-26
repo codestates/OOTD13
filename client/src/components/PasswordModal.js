@@ -3,17 +3,24 @@ import styled from "styled-components";
 import axios from 'axios';
 
 const Div = styled.div`
+  background-color: rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  /* padding: 50px; */
+  margin: 0 0;
+  border-radius: 20px;  
+  cursor: cursor;
+  z-index: 999;
   width: 100vw;
   height: 100vh;
-  margin: 0 0;
-  padding: 0 0;
 `
 
-const Main = styled.div`
+const Main = styled.div.attrs(props => ({
+  // attrs 메소드를 이용해서 아래와 같이 div 엘리먼트에 속성을 추가할 수 있습니다.
+  role: 'dialog'
+}))`
   background-color: #FAFAFA;
   display: flex;
   flex-direction: column;
@@ -64,10 +71,7 @@ const Cancel = styled(Button)`
   border: 1px solid gray;
   color: black;
 `
-export const PasswordModal = () => {
-  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQG5hdmVyLmNvbSIsInVzZXJuYW1lIjoi6rWs6rWsIiwicGFzc3dvcmQiOiIxMjM0IiwibG9naW5fbWV0aG9kIjowLCJjcmVhdGVkQXQiOiIyMDIyLTAxLTI1VDA2OjQ0OjUwLjAwMFoiLCJpYXQiOjE2NDMwOTc1ODcsImV4cCI6MTY0MzE4Mzk4N30.XAgDOukIPgNBK3IPXL19m-yztF0xVJcZEAgJdECKeU0"
-  const userPassword = 1234;
-  const email = "test2@naver.com";
+export const PasswordModal = ({email, password, openPwModal, accessToken}) => {
   const [curPassword, setCurPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordCheck, setNewPasswordCheck] = useState("");
@@ -117,7 +121,7 @@ export const PasswordModal = () => {
     } else if(newPasswordCheck === "") {
       alert("변경할 비밀번호 확인을 입력하세요");
       return;
-    } else if(!Number(curPassword) === userPassword) { // 작동 안됨
+    } else if(!Number(curPassword) === password) {
       alert("현재 비밀번호가 일치하지 않습니다.");
       return;
     } else if(!isValidPassword) {
@@ -135,13 +139,13 @@ export const PasswordModal = () => {
       }})
       .then((res) => {
         alert("비밀번호가 성공적으로 변경되었습니다.");
-        window.location.href = "http://localhost:3000";    
+        openPwModal();
       })
       .catch((err) => console.log(err));
     }
   }
   const reDirectToHome = () => {
-    window.location.href = "http://localhost:3000";
+    openPwModal();
   }
   return (
     <Div>
