@@ -171,7 +171,7 @@ import axios from 'axios';
     color: red;
   `
 
-export const Signup = () => {
+export const Signup = ({reDirectToGithub}) => {
   const [emailHead, setEmailHead] = useState("");
   const [emailTail, setEmailTail] = useState("");
   const [email, setEmail] = useState("123");
@@ -341,7 +341,7 @@ export const Signup = () => {
           <TopTitle>회원가입</TopTitle>
           <SnsSpan>SNS계정으로 간편 로그인/회원가입</SnsSpan>
           <GithubLink href="#" className="signup-form-github">
-            <img src={githubLogo} alt="githubLogo" width="50px"></img>
+            <img src={githubLogo} onClick={reDirectToGithub} alt="githubLogo" width="50px"></img>
           </GithubLink>
         <Hr></Hr>
         </TopForm>
