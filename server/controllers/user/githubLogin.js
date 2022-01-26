@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
         },
       });
     }catch{
-      await createUser({
+      await createUser.createUser({
         loginMethod: 1,
         email: gitUserInfo.email,
         username: gitUserInfo.username,
