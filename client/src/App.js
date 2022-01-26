@@ -229,7 +229,7 @@ function App() {
   const [isPwModalOpen, setIsPwModalOpen] = useState(false);
   const [isWdModalOpen, setIsWdModalOpen] = useState(false);
   const [postList, setPostList] = useState([]);
-  const GITHUB_ID = '24bfea583d4a595757ef';
+  const GITHUB_ID = 'c0dbbe927c47055f34f7';
   const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
 
   useEffect(()=> {
