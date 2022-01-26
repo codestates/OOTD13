@@ -8,16 +8,16 @@ module.exports = async (req, res) => {
     req.query.loginmethod,
     req.headers.authorization
   );
-  if (!userInfo) return res.status(401).send({ response: "not authorized1" });
+  if (!userInfo) return res.status(401).send({ response: "not authorized" });
   deleteUser
     .deleteUserPost(userInfo.email, req.query.loginmethod)
     .then(() => {
       res.status(204).send({ response: "deleted" });
     })
     .catch(async () => {
-        return res.status(401).send({ response: "not authorized2" });
+        return res.status(401).send({ response: "not authorized" });
     });
   } catch{
-    return res.status(401).send({ response: "not authorized1" });
+    return res.status(401).send({ response: "not authorized" });
   }
 };

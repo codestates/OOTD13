@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import PasswordModal from "./pages/PasswordModal";
+import PasswordModal from "./components/PasswordModal";
 import Post from "./pages/Post";
-import Withdrawal from "./pages/Withdrawal";
+import Withdrawal from "./components/Withdrawal";
 import Main from "./components/Main"
 import logo from "./images/ootd13Logo.png";
 import Footer from "./components/Footer"
+import './App.css'
 import {
   BrowserRouter as Router,
-  Routes,
   Route,
+  Switch,
   Link,
 } from "react-router-dom";
 import axios from 'axios';
 import styled from "styled-components";
 import viewOptions from './viewsOption';
+// import Home from './components/Home';
+// import { useNavigate } from "react-router-dom";
 
 const Container = styled.div` 
   width: max(700px, auto);
@@ -52,7 +54,7 @@ const Button = styled.button`
   border-radius: 4px;
   font-weight: 500;
   margin-left: 10px;
-  font-size: 16px;
+  font-size: 18px;
   `
 ;
 
@@ -64,8 +66,14 @@ const WriteButton = styled(Button)`
   `
 ;
 
-const selectButton = styled(Button)`
+const SelectButton = styled(Button)`
   width: 150px;
+  `
+;
+
+const A = styled.a`
+  width: 150px;
+  background-color: red;
   `
 ;
 
@@ -185,6 +193,18 @@ const Cancel = styled.button`
   border: 0;
   outline: 0;
 `
+
+const Username = styled.span`
+  font-size: 18px;
+  font-weight: 800;
+  color: #7AD7F5;
+  display: inline-block;
+  background-color: rgb(230, 230, 230);
+  width: auto;
+  padding: 10px;
+  border-radius: 6px;
+  /* display: flex; */
+`
 const MainDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -198,21 +218,37 @@ const MainDiv = styled.div`
 
 
 
-
-
 function App() {
-  const [userInfo, setUserInfo] = useState({isLogin: false, accessToken: "",})
+  const [userInfo, setUserInfo] = useState({username:"", email:"", createdAt: "", loginMethod: "", password: ""});
+  const [isLogin, setIsLogin] = useState(false);
+  const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QzQG5hdmVyLmNvbSIsInVzZXJuYW1lIjoi6riw6riwIiwicGFzc3dvcmQiOiJna3NhbHM0OSIsImxvZ2luX21ldGhvZCI6MCwiY3JlYXRlZEF0IjoiMjAyMi0wMS0yNVQwODoyNzoyMC4wMDBaIiwiaWF0IjoxNjQzMTI4ODc1LCJleHAiOjE2NDMyMTUyNzV9.NP_UaGMUcYbNng23mHSFoIHf1Flyz52qFIVh6nZwCm8");
   const [tagList, setTagList] = useState([]);
+  const [isPwModalOpen, setIsPwModalOpen] = useState(false);
+  const [isWdModalOpen, setIsWdModalOpen] = useState(false);
 
   useEffect(()=> {
-    // console.log(tagList);
+    console.log(isLogin);
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
       getAccessToken(authorizationCode)
     }
-  },)
+  },[userInfo, isLogin])
+
+  // const checkLogin = () => {
+  //   if(localStorage.getItem("key")) {
+      
+  //   }
+  // }
+  const resetUserInfo = () => {
+    setUserInfo({username:"", email:"", createdAt: "", loginMethod: "", password: ""});
+    setIsLogin(!isLogin);
+    localStorage.removeItem('key');
+  }
   
+  const accessLogin = () => {
+    setIsLogin(!isLogin);
+  }
   const getAccessToken = (authorizationCode) => {
     axios({
       url: 'http://localhost:5000/user/login/github',
@@ -239,41 +275,110 @@ function App() {
     setTagList([...tagList, event.target.value]);
   }
 
+  const openPwModal = () => {
+    // e.stopPropagation();
+    setIsPwModalOpen(!isPwModalOpen);
+  }
+
+  const openWdModal = () => {
+    // e.stopPropagation();
+    setIsWdModalOpen(!isWdModalOpen);
+  }
+
+  const clickToLogout = () => {
+    const {loginMethod}= userInfo;
+
+    if(!isLogin) {
+      window.location.href = "http://localhost:3000"
+    }
+    
+    axios({
+      url: `http://localhost:5000/user/logout?loginmethod=${loginMethod}`,
+      method: 'get',
+      headers: {authorization: accessToken},
+    })
+    .then((res) => {
+      alert("정상적으로 로그아웃되었습니다.")
+      resetUserInfo();
+    })
+    .catch((err) => {
+      alert("비정상적인 시도입니다.")
+      resetUserInfo();
+    }
+      );
+  }
+
+  const changeUserInfo = (info) => {
+    setUserInfo(info);
+  }
+  const changeAccessToken = (token) => {
+    setAccessToken(token);
+  }
+  
+  const clickToWrite = () => {
+    if(!userInfo.isLogin) {
+      window.location.href="http://localhost:3000/login"
+    }
+      window.location.href="http://localhost:3000/login"
+  }
   return (
     <Router>
-        <Routes>
-          <Route path="/" exact={true} ></Route>
-          <Route path="/login" element={<Login/>}></Route>
-          <Route path="/signup" element={<Signup/>}></Route>
-          <Route path="/post" element={<Post/>}></Route>
-          <Route path="/passwordmodal" element={<PasswordModal/>}></Route>
-          <Route path="/withdrawal" element={<Withdrawal/>}></Route>
-      </Routes>
+        <Switch>
+          <Route path="/" exact={true}></Route>
+          <Route path="/login"><Login accessLogin={accessLogin} changeUserInfo={changeUserInfo} changeAccessToken={changeAccessToken} accessToken={accessToken} userInfo={userInfo}/></Route>
+          <Route path="/signup"><Signup/></Route>
+          <Route path="/post"><Post/></Route>
+      </Switch>
       <Container>
+          {!isPwModalOpen 
+          ? null
+          : <PasswordModal email={userInfo.email} password={userInfo.password} openPwModal={openPwModal} accessToken={accessToken}></PasswordModal>
+          }
+          {!isWdModalOpen
+          ? null
+          : <Withdrawal resetUserInfo={resetUserInfo} email={userInfo.email} accessToken={accessToken} loginMethod={userInfo.loginMethod} openWdModal={openWdModal}></Withdrawal>
+          }
         <Header>
             <Blank></Blank>
           <LogoDiv>
             <Logo src={logo} />
           </LogoDiv>
           <ButtonDiv>
-            <Link to="/login">
-              <Button>로그인</Button>
-            </Link>
-            <Link to="/signup">
-              <Button>회원가입</Button>
-            </Link>
-            {/* <Link to="/post">
-              <selectButton>정보수정</selectButton>
-            </Link>
-            <Link to="/post">
-              <Button>게시물</Button>
-            </Link>
-            <Link to="/passwordmodal">
-              <selectButton>비밀번호변경</selectButton>
-            </Link>
-            <Link to="/withdrawal">
-              <selectButton>회원탈퇴</selectButton>
-            </Link> */}
+          {!isLogin
+            ? <div>
+                <Link to="/login">
+                  <Button>로그인</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button>회원가입</Button>
+                </Link>
+              </div>
+          : 
+          <div>
+          <Username>{userInfo.username}</Username>
+          <SelectButton onClick={openPwModal}>비밀번호변경</SelectButton>
+          <SelectButton onClick={openWdModal}>회원탈퇴</SelectButton>
+          <SelectButton onClick={clickToLogout}>로그아웃</SelectButton>
+          </div>
+          // <div className="navi-div">
+          //     <nav>
+          //       <ul className="ul-dept1">
+          //         <li className="li-dept1">
+          //           <a className="a-dept1">정보수정</a>
+          //           <ul className="ul-dept2">
+          //             <li className="li-dept2">
+          //               <a className="a-dept2" onClick={openPwModal}>비밀번호변경</a>
+          //             </li>
+          //             <li className="li-dept2">
+          //               <a className="a-dept2"onClick={openWdModal}>회원탈퇴</a>
+          //             </li>
+          //           </ul>
+          //         </li>
+          //       </ul>
+          //     </nav>
+            // <SelectButton onClick={clickToLogout}>로그아웃</SelectButton>
+            // </div>  
+          } 
           </ButtonDiv>
         </Header>
         <Line></Line>
@@ -295,7 +400,7 @@ function App() {
             )
             })}
           </MainSelect>
-          <WriteButton>글쓰기</WriteButton>
+          <WriteButton onClick={clickToWrite}>글쓰기</WriteButton>
         </MainTop>
         <MainTag>
         {tagList.length <= 1 
