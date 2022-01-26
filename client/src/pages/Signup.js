@@ -259,7 +259,8 @@ export const Signup = () => {
   }
 
   const checkingUsername = () => {
-    if(username.length <= 1) {
+    if(username.length <= 1 || username.length > 8 ) {
+      alert("별명은 2자~8자 사이로 입력바랍니다.");
       return;
     } else {
       axios

@@ -8,7 +8,7 @@ const Div = styled.div`
   width: 420px;
   height: 440px;
   margin: 10px 20px 10px 20px;
-  background-color: bisque;
+  /* background-color: bisque; */
 `
 const Img = styled.img`
   align-self: flex-start;
@@ -25,14 +25,14 @@ const Inform = styled.span`
   justify-content: center;
   width: 100%;
   height: 50px;
+  color: #C6BBAA;
 `
 
-
-function Main() { 
+function Main({username, imgSrc, like, view, tag}) { 
   return (
     <Div>
-      <Img></Img>
-      <Inform>조회수 156 · 좋아요 60</Inform>
+      <Img src={imgSrc}></Img>
+      <Inform>조회수 {view} · 좋아요 {like}</Inform>
     </Div>
   )
 }

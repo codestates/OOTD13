@@ -154,12 +154,14 @@ const MainSelect = styled.div`
   align-items: center;
   height: 100%;
   width: 80%;
+  background-color: orange;
 `;
 const MainTag = styled.div`
   display: flex;
   height: 5%;
   width: 100%;  
   margin-left: 30px;
+  background-color: paleturquoise;
 `;
 
 const Tag = styled.span`
@@ -221,25 +223,42 @@ const MainDiv = styled.div`
 function App() {
   const [userInfo, setUserInfo] = useState({username:"", email:"", createdAt: "", loginMethod: "", password: ""});
   const [isLogin, setIsLogin] = useState(false);
-  const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QzQG5hdmVyLmNvbSIsInVzZXJuYW1lIjoi6riw6riwIiwicGFzc3dvcmQiOiJna3NhbHM0OSIsImxvZ2luX21ldGhvZCI6MCwiY3JlYXRlZEF0IjoiMjAyMi0wMS0yNVQwODoyNzoyMC4wMDBaIiwiaWF0IjoxNjQzMTI4ODc1LCJleHAiOjE2NDMyMTUyNzV9.NP_UaGMUcYbNng23mHSFoIHf1Flyz52qFIVh6nZwCm8");
+  const [accessToken, setAccessToken] = useState("");
   const [tagList, setTagList] = useState([]);
+  const [queryOptions, setQueryOptions] = useState({});
   const [isPwModalOpen, setIsPwModalOpen] = useState(false);
   const [isWdModalOpen, setIsWdModalOpen] = useState(false);
+  const [postList, setPostList] = useState([]);
 
   useEffect(()=> {
-    console.log(isLogin);
+    renderMain();
+    console.log("postList ====", postList);
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
       getAccessToken(authorizationCode)
     }
-  },[userInfo, isLogin])
+  },[userInfo, isLogin, queryOptions])
 
-  // const checkLogin = () => {
-  //   if(localStorage.getItem("key")) {
-      
-  //   }
-  // }
+  const renderMain = () => {
+    axios({
+      url: "http://localhost:5000/main",
+      method: "get",
+      params: {
+        order: "old",
+        page: "",
+        sex: "",
+        weather: "",
+        season: "",
+        style: "",
+      }
+    }).then((res) => {
+      const renderPost = res.data.data.post;
+      setPostList(renderPost);
+      console.log(res.data.data.post)
+    })
+    .catch((err) => console.log(err))
+  }
   const resetUserInfo = () => {
     setUserInfo({username:"", email:"", createdAt: "", loginMethod: "", password: ""});
     setIsLogin(!isLogin);
@@ -416,12 +435,18 @@ function App() {
           }
         </MainTag>
         <MainDiv>
-          <Main></Main>
-          <Main></Main>
-          <Main></Main>
-          <Main></Main>
-          <Main></Main>
-          <Main></Main>
+          {postList.map((post) => 
+          {
+            return (
+            <Main 
+              key={post.postId} 
+              username={post.username} 
+              imgSrc={post.imageSrc} 
+              like={post.like} 
+              view={post.view}
+              tag={post.tag}></Main>
+            )
+          })}
         </MainDiv>
         </Body>
         <Line></Line>
