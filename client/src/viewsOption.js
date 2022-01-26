@@ -13,38 +13,38 @@ const viewOptions = [
     subject: 'sex',
     subjectName: '성별',
     options: {
-      1: 'man', 
-      2: 'woman',
+      1: '남성', 
+      2: '여성',
     }
   },
   {
     subject: 'weather',
     subjectName: '날씨',
     options: {
-      1: 'rain', 
-      2: 'cloud',
-      3: 'snow',
-      4: 'sun',
+      1: '비 오는 날', 
+      2: '흐린 날',
+      3: '눈 오는 날',
+      4: '맑은 날',
     }
   },
   {
     subject: 'season',
     subjectName: '계절',
     options: {
-      1: 'SS', 
-      2: 'FW',
+      1: 'SS시즌', 
+      2: 'FW시즌',
     }
   },
   {
     subject: 'style',
     subjectName: '스타일',
     options: {
-      1: 'casual', 
-      2: 'dandy',
-      3: 'street',
-      4: 'hiphop',
-      5: 'modern',
-      6: 'classic'
+      1: 'Casual', 
+      2: 'Dandy',
+      3: 'Street',
+      4: 'Hiphop',
+      5: 'Modern',
+      6: 'Classic'
     }
   }
 ]
