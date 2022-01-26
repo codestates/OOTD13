@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PasswordModal from "./components/PasswordModal";
-import Post from "./pages/Post";
+import PostModal from "./components/PostModal";
 import Withdrawal from "./components/Withdrawal";
 import Main from "./components/Main"
 import logo from "./images/ootd13Logo.png";
@@ -17,8 +17,9 @@ import {
 import axios from 'axios';
 import styled from "styled-components";
 import viewOptions from './viewsOption';
-// import Home from './components/Home';
-// import { useNavigate } from "react-router-dom";
+// import dotenv from 'dotenv'
+// dotenv.config()
+
 
 const Container = styled.div` 
   width: max(700px, auto);
@@ -225,47 +226,47 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [accessToken, setAccessToken] = useState("");
   const [tagList, setTagList] = useState([]);
-  const [queryOptions, setQueryOptions] = useState({});
+  const [queryOptions, setQueryOptions] = useState({order: {}, page: 1, sex: {}, weather: {}, season: {}, style: {}});
   const [isPwModalOpen, setIsPwModalOpen] = useState(false);
   const [isWdModalOpen, setIsWdModalOpen] = useState(false);
   const [postList, setPostList] = useState([]);
-  const GITHUB_ID = '24bfea583d4a595757ef';
+  const GITHUB_ID = "24bfea583d4a595757ef";
   const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
-
+  
   useEffect(()=> {
     renderMain();
-    console.log("postList ====", postList);
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
       getAccessToken(authorizationCode);
     }
-    
-  },[userInfo, isLogin, queryOptions])
+  },[userInfo, isLogin, queryOptions, tagList])
 
   const renderMain = () => {
+    console.log("Object.values(queryOptions) ===", Object.values(queryOptions));
+    const {order, page, sex, weather, season, style}= queryOptions;
+    console.log("{order, page, sex, weather, season, style} =====", {order, page, sex, weather, season, style});
+    console.log("Object.values(page) ====", Object.keys(page));
     axios({
       url: "http://localhost:5000/main",
       method: "get",
       params: {
-        order: "",
-        page: 1,
-        sex: "",
-        weather: "",
-        season: "",
-        style: "",
+        order: String(Object.keys(order)) || "", 
+        page: page || 1, 
+        sex: Number(Object.keys(sex)) || "",  
+        weather: Number(Object.keys(weather)) || "",   
+        season: Number(Object.keys(season)) || "",  
+        style: Number(Object.keys(style)) || ""
       }
     }).then((res) => {
       const renderPost = res.data.data.post;
       setPostList(renderPost);
-      console.log(res.data.data.post)
     })
     .catch((err) => console.log(err))
   }
   const resetUserInfo = () => {
-    setUserInfo({username:"", email:"", createdAt: "", loginMethod: "", password: ""});
-    accessLogin();
-    localStorage.removeItem('key');
+    setUserInfo({username: "", email: "", createdAt: "", loginMethod: "", password: ""});
+    accessLogin.removeItem('key');
   }
   
   const accessLogin = () => {
@@ -295,12 +296,30 @@ function App() {
   }
   
   const deleteTags = () => {
+    setQueryOptions({order: {}, page: 1, sex: {}, weather: {}, season: {}, style: {}});
     setTagList([]);
   }
 
   const addTag = (event) => {
     event.preventDefault();
-    setTagList([...tagList, event.target.value]);
+    const index = event.nativeEvent.target.selectedIndex; // value index
+    const subject = event.currentTarget.name; // 쿼리 subject key
+    const value = event.target.value // 쿼리에 들어갈 값
+    const text = event.nativeEvent.target[index].text; // 화면에 뿌려줄 text
+    const object = JSON.parse(JSON.stringify(queryOptions));
+    if(Object.keys(object[subject]).length > 0) {
+      object[subject] = {}; 
+      object[subject][value] = text;
+    } else {
+      object[subject][value] = text;
+    }
+    
+    setQueryOptions(object);
+
+    //taglist가 아닌 queryOptions로 태그를 만든다.
+    // 어떻게? queryOptions를 돌면서 값이 ""이 아닌 경우 그 해당 키와 subject값으로 viewsOption에서
+
+    setTagList([...tagList, text]);
   }
 
   const openPwModal = () => {
@@ -330,11 +349,11 @@ function App() {
       headers: {authorization: accessToken},
     })
     .then((res) => {
-      alert("정상적으로 로그아웃되었습니다.")
+      alert("정상적으로 로그아웃되었습니다.");
       resetUserInfo();
     })
     .catch((err) => {
-      alert("비정상적인 시도입니다.")
+      alert("비정상적인 시도입니다.");
       resetUserInfo();
     }
       );
@@ -364,7 +383,7 @@ function App() {
           <Route path="/" exact={true}></Route>
           <Route path="/login"><Login reDirectToGithub={reDirectToGithub} accessLogin={accessLogin} changeUserInfo={changeUserInfo} changeAccessToken={changeAccessToken} accessToken={accessToken} userInfo={userInfo}/></Route>
           <Route path="/signup"><Signup reDirectToGithub={reDirectToGithub}/></Route>
-          <Route path="/post"><Post/></Route>
+          <Route path="/post"><PostModal/></Route>
       </Switch>
       <Container>
           {!isPwModalOpen 
@@ -429,35 +448,48 @@ function App() {
                 {Object.keys(view.options).map((key) => {
                   const val = view.options[key];
                   return (
-                  <option key={key} value={val}>{val}</option>
+                  <option key={key} value={key}>{val}</option>
                   )
                 })
               }
               </Select>
-            )
-            })}
+            )})
+            }
           </MainSelect>
           <WriteButton onClick={clickToWrite}>글쓰기</WriteButton>
         </MainTop>
         <MainTag>
-        {tagList.length <= 1 
+        {/* {tagList.length <= 1 
           ? null
           : tagList.map((tag) => {
             return (
               <Tag key={tag}>{tag}</Tag>
             )
-          })}
+          })} */}
+        {Object.keys(queryOptions).map((option)=> {
+          console.log("key ===", Object.values(queryOptions[option]).filter((val) => val !== ""))
+          if(option === 'page') return;
+          return Object.values(queryOptions[option]).map((value) => {
+            if(value === "") return;
+            return (
+            <Tag key={value}>{value}</Tag>
+            )
+          })
+          })
+        }  
           {tagList.length <= 1
           ? null
           : <Cancel type="button" onClick={deleteTags}>초기화</Cancel>
-          }
+        }
+
         </MainTag>
         <MainDiv>
           {postList.map((post) => 
           {
             return (
             <Main 
-              key={post.postId} 
+              key={post.postId}
+              postId={post.postId}
               username={post.username} 
               imgSrc={post.imageSrc} 
               like={post.like} 
