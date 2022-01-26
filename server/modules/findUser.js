@@ -6,6 +6,7 @@ module.exports = async (data) => {
   if (data.email) params.email = data.email;
   if (data.password) params.password = data.password;
   if (data.username) params.username = data.username;
+  console.log(params)
   const userInfo = await models.user.findOne({ where: params });
   return userInfo;
 };
