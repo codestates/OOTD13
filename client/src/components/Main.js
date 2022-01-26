@@ -20,8 +20,11 @@ const Img = styled.img`
   height: 400px;
   cursor: pointer;
   &:hover {
-    width: 410px;
-    height: 410px;
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -o-transform: scale(1.05);
   }
   /* background-color: black; */
 `
@@ -37,7 +40,6 @@ const Inform = styled.span`
 `
 
 function Main({postId, imgSrc, like, view, selectPost}) { 
-
   return (
     <Div>
       <Img key={postId} src={imgSrc} onClick={()=> {selectPost(postId)}}></Img>

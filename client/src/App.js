@@ -17,9 +17,7 @@ import {
 import axios from 'axios';
 import styled from "styled-components";
 import viewOptions from './viewsOption';
-// import dotenv from 'dotenv'
-// dotenv.config()
-
+import noImage from "./images/loading.png"
 
 const Container = styled.div` 
   width: max(700px, auto);
@@ -28,27 +26,26 @@ const Container = styled.div`
   height: 100vh;
   justify-content: center;
   align-items: center;
-  margin: 0 150px;
+  /* margin: 0 150px; */
   background-color: burlywood;
   background-color: rgba(100,100,100,0.001);
   `
 ;
 
 const Header = styled.div`
-  height: 80px;
+  height: 100px;
   width: 100%;
   display: flex;
   justify-items: center;
   align-items: center;
   box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.05);
-  margin: 0 150px;
   padding: 0 0;
   `
 ;
 
 const Button = styled.button`
-  width: 80px;
-  height: 40px;
+  width: 120px;
+  height: 50px;
   background-color: #36C5F0;
   border: 1px solid #00bcf5;
   color: white;
@@ -62,10 +59,12 @@ const Button = styled.button`
 ;
 
 const WriteButton = styled(Button)`
-  width: 150px;
+  width: 200px;
+  height: 60px;
   justify-self: flex-end;
   align-self: center;
   background-color: rosybrown;
+  margin-right: 30px; 
   `
 ;
 
@@ -86,6 +85,7 @@ const ButtonDiv = styled.div`
   align-items: center;
   width: 33%;
   height: 100%;
+  margin-right: 30px; 
   `
 ;
 
@@ -134,6 +134,8 @@ const Line = styled.hr`
   border: 1;
   height: 1;
   width: 100%;
+  margin: 0 0;
+  padding: 0 0;
 `
 const Select = styled.select`
   width: 100px;
@@ -149,7 +151,10 @@ const Select = styled.select`
   font-size: 19px;
   font-weight: 700;
   color: rgb(60,60,60);
-  
+  cursor: pointer;
+    &:hover {
+      background-color: (20, 20, 20);
+    }
 `
 
 const MainSelect = styled.div`
@@ -238,6 +243,13 @@ const MainDiv = styled.div`
   /* grid-auto-flow: dense; */
 `;
 
+const NoPost = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-end;
+  align-items: center;
+`
+
 
 function App() {
   const [userInfo, setUserInfo] = useState({username:"", email:"", createdAt: "", loginMethod: "", password: ""});
@@ -250,11 +262,15 @@ function App() {
   const [postList, setPostList] = useState([]);
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
   const GITHUB_ID = "24bfea583d4a595757ef";
   const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
   
   useEffect(()=> {
+    setIsLoading(true);
     renderMain();
+    setIsLoading(false);
     console.log("selectedPost ========", selectedPost)
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
@@ -486,23 +502,28 @@ function App() {
         }
 
         </MainTag>
-        <MainDiv>
-          {postList.map((post) => 
-          {
-            return (
-            <Main 
-              key={post.postId}
-              postId={post.postId}
-              imgSrc={post.imageSrc} 
-              like={post.like} 
-              view={post.view}
-              selectPost={selectPost}>
-            </Main>
-            )
-          })}
-        </MainDiv>
+        {postList.length === 0
+        ? <NoPost>
+          <img src={noImage} width="300px" height="300px"></img>
+          <span>찾으시는 결과가 없습니다.ㅠㅠ </span>
+        </NoPost>
+        :<MainDiv>
+        {postList.map((post) => 
+        {
+          return (
+          <Main 
+            key={post.postId}
+            postId={post.postId}
+            imgSrc={post.imageSrc} 
+            like={post.like} 
+            view={post.view}
+            selectPost={selectPost}>
+          </Main>
+          )
+        })}
+      </MainDiv>
+      }  
         </Body>
-        <Line></Line>
         <Footer></Footer>
       </Container>
     </Router>
