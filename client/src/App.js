@@ -229,6 +229,8 @@ function App() {
   const [isPwModalOpen, setIsPwModalOpen] = useState(false);
   const [isWdModalOpen, setIsWdModalOpen] = useState(false);
   const [postList, setPostList] = useState([]);
+  const GITHUB_ID = '24bfea583d4a595757ef';
+  const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
 
   useEffect(()=> {
     renderMain();
@@ -236,8 +238,9 @@ function App() {
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
-      getAccessToken(authorizationCode)
+      getAccessToken(authorizationCode);
     }
+    
   },[userInfo, isLogin, queryOptions])
 
   const renderMain = () => {
@@ -245,8 +248,8 @@ function App() {
       url: "http://localhost:5000/main",
       method: "get",
       params: {
-        order: "old",
-        page: "",
+        order: "",
+        page: 1,
         sex: "",
         weather: "",
         season: "",
@@ -261,7 +264,7 @@ function App() {
   }
   const resetUserInfo = () => {
     setUserInfo({username:"", email:"", createdAt: "", loginMethod: "", password: ""});
-    setIsLogin(!isLogin);
+    accessLogin();
     localStorage.removeItem('key');
   }
   
@@ -276,7 +279,13 @@ function App() {
         authorizationCode
       }
     })
-      .then((res) => console.log(res))
+      .then((res) => {
+        const token = res.data.data.accessToken;
+        const info = res.data.data.userInfo;
+        changeAccessToken(token); // token 업데이트
+        changeUserInfo(info); //userInfo 업데이트
+        accessLogin(); // Login 처리
+      })
       .catch((err) => console.log(err));
     
     // this.setState({
@@ -296,6 +305,10 @@ function App() {
 
   const openPwModal = () => {
     // e.stopPropagation();
+    if(userInfo.loginMethod === 1) {
+      alert("SNS계정 회원은 비밀번호를 변경할 수 없습니다.");
+      return;
+    }
     setIsPwModalOpen(!isPwModalOpen);
   }
 
@@ -310,7 +323,7 @@ function App() {
     if(!isLogin) {
       window.location.href = "http://localhost:3000"
     }
-    
+
     axios({
       url: `http://localhost:5000/user/logout?loginmethod=${loginMethod}`,
       method: 'get',
@@ -340,12 +353,17 @@ function App() {
     }
       window.location.href="http://localhost:3000/login"
   }
+
+  const reDirectToGithub = () => {
+    window.location.assign(GITHUB_URL);
+  }
+
   return (
     <Router>
         <Switch>
           <Route path="/" exact={true}></Route>
-          <Route path="/login"><Login accessLogin={accessLogin} changeUserInfo={changeUserInfo} changeAccessToken={changeAccessToken} accessToken={accessToken} userInfo={userInfo}/></Route>
-          <Route path="/signup"><Signup/></Route>
+          <Route path="/login"><Login reDirectToGithub={reDirectToGithub} accessLogin={accessLogin} changeUserInfo={changeUserInfo} changeAccessToken={changeAccessToken} accessToken={accessToken} userInfo={userInfo}/></Route>
+          <Route path="/signup"><Signup reDirectToGithub={reDirectToGithub}/></Route>
           <Route path="/post"><Post/></Route>
       </Switch>
       <Container>
