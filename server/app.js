@@ -9,10 +9,11 @@ var userRouter = require('./routes/user');
 var postRouter = require('./routes/post');
 var passwordRouter = require('./routes/password');
 var mainRouter = require('./routes/main');
-var cors=require('cors')
+var cors = require('cors')
 
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
