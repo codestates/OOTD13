@@ -7,10 +7,22 @@ module.exports = async (req, res) => {
   try {
     const token = await requestTokenGit(req.body.authorizationCode);
     const gitUserInfo = await requestUserInfoGit(token);
-    const userInfo = await findUser({ email: gitUserInfo.email, loginMethod: '1' });
-
-    if (!userInfo) {
-      await createUser({
+    try{
+      const userInfo = await findUser({ email: gitUserInfo.email, loginMethod: '1' });
+      return res.status(200).send({
+        response: "ok",
+        data: {
+          userInfo: {
+            email: userInfo.email,
+            username: userInfo.username,
+            createdAt: userInfo.createdAt,
+            loginMethod: userInfo.login_method,
+          },
+          accessToken: token
+        },
+      });
+    }catch{
+      await createUser.createUser({
         loginMethod: 1,
         email: gitUserInfo.email,
         username: gitUserInfo.username,
@@ -29,19 +41,6 @@ module.exports = async (req, res) => {
         },
       });
     }
-
-    return res.status(200).send({
-      response: "ok",
-      data: {
-        userInfo: {
-          email: userInfo.email,
-          username: userInfo.username,
-          createdAt: userInfo.createdAt,
-          loginMethod: userInfo.login_method,
-        },
-        accessToken: token
-      },
-    });
   } catch {
     return res.status(401).send({ response: "invalid code" });
   }

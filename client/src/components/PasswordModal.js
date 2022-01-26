@@ -111,21 +111,32 @@ export const PasswordModal = ({email, password, openPwModal, accessToken}) => {
   };
 
   const checkingPassword = () => {
+    console.log(`현재 비밀번호는 ${password}입니다.`);
+    console.log(`입력한 비밀번호는 ${curPassword}입니다.`);
+    console.log(`변경할 비밀번호는 ${newPassword}입니다.`);
+    console.log(curPassword === password);
+
     // 하나라도 공백이면 단순 return
     if(curPassword === "") {
       alert("현재 비밀번호를 입력하세요");
       return;
-    } else if(newPassword === "") {
+    } else if(!curPassword === password) {
+      alert("현재 비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    
+    
+    if(newPassword === "") {
       alert("변경할 비밀번호를 입력하세요");
       return;
     } else if(newPasswordCheck === "") {
       alert("변경할 비밀번호 확인을 입력하세요");
       return;
-    } else if(!Number(curPassword) === password) {
-      alert("현재 비밀번호가 일치하지 않습니다.");
-      return;
     } else if(!isValidPassword) {
       alert("새 비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
+      return;
+    } else if(!newPassword === password) {
+      alert("새 비밀번호가 현재 비밀번호와 같습니다.");
       return;
     } else {
       axios({
