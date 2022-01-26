@@ -16,6 +16,7 @@ module.exports = async (req, res) => {
         accessToken: await createToken.createToken(userInfo),
         userInfo: {
           email: userInfo.email,
+          password: userInfo.password,
           username: userInfo.username,
           createdAt: userInfo.createdAt,
           loginMethod: userInfo.login_method,
