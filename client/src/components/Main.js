@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import styled from "styled-components";
-import PostModal from "./PostModal";
+
 const Div = styled.div`
   display: flex;
   flex-direction: column;
-  width: 420px;
+  width: auto;
   height: 440px;
   margin: 10px 20px 10px 20px;
   /* background-color: bisque; */
 `
+
 const Img = styled.img`
   align-self: flex-start;
+  border-radius: 10px;
   justify-self: center;
   display: block;
   margin: 0 auto;
-  width: 400px;
+  width: min(auto, 400px);
   height: 400px;
+  cursor: pointer;
+  &:hover {
+    width: 410px;
+    height: 410px;
+  }
+  /* background-color: black; */
 `
 
 const Inform = styled.span`
@@ -25,26 +32,16 @@ const Inform = styled.span`
   justify-content: center;
   width: 100%;
   height: 50px;
-  font-weight: 700;
-  color: #C6BBAA;
+  font-weight: 500;
+  color: gray;
 `
 
-function Main({postId, username, imgSrc, like, view, tag}) { 
-  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
-
-  const openPostModal = () => {
-    setIsPostModalOpen(!isPostModalOpen);
-  }
+function Main({postId, imgSrc, like, view, selectPost}) { 
 
   return (
     <Div>
-    {!isPostModalOpen 
-      ? null
-      : <div>
-      <PostModal props={postId, username, imgSrc, like, view, tag} />
-      </div>}
-      <Img key={postId} src={imgSrc} onClick={openPostModal}></Img>
-      <Inform>조회수 {view} · 좋아요 {like}</Inform>
+      <Img key={postId} src={imgSrc} onClick={()=> {selectPost(postId)}}></Img>
+      <Inform>조회수 {view}{" "}·{" "}좋아요 {like}</Inform>
     </Div>
   )
 }

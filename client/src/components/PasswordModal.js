@@ -8,9 +8,7 @@ const Div = styled.div`
   align-items: center;
   justify-content: center;
   position: fixed;
-  /* padding: 50px; */
   margin: 0 0;
-  border-radius: 20px;  
   cursor: cursor;
   z-index: 999;
   width: 100vw;

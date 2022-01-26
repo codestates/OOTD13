@@ -30,6 +30,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 150px;
+  background-color: burlywood;
+  background-color: rgba(100,100,100,0.001);
   `
 ;
 
@@ -135,19 +137,20 @@ const Line = styled.hr`
   width: 100%;
 `
 const Select = styled.select`
-  width: 120px;
+  width: 100px;
   height: 50px;
   margin: 0 15px;
   display: inline-block;
   box-sizing: border-box;
-  /* padding-left: 5px; */
+  padding-left: 10px;
   border-radius: 6px;
   border: none;
-  background-color: #DEDEDE;
+  background-color: #C8C8C8;
   height: 50px;
-  font-size: 18px;
-  font-weight: 500;
-  color: rgb(50,50,50);
+  font-size: 19px;
+  font-weight: 700;
+  color: rgb(60,60,60);
+  
 `
 
 const MainSelect = styled.div`
@@ -156,14 +159,14 @@ const MainSelect = styled.div`
   align-items: center;
   height: 100%;
   width: 80%;
-  background-color: orange;
+  /* background-color: orange; */
 `;
 const MainTag = styled.div`
   display: flex;
   height: 5%;
   width: 100%;  
   margin-left: 30px;
-  background-color: paleturquoise;
+  /* background-color: paleturquoise; */
 `;
 
 const Tag = styled.span`
@@ -209,17 +212,32 @@ const Username = styled.span`
   border-radius: 6px;
   /* display: flex; */
 `
+// const MainDiv = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+//   align-content: center;
+//   margin: 10px 10px;
+//   /* background-color: beige; */
+//   height: 85%;
+//   width: 100%;  
+// `;
+
 const MainDiv = styled.div`
-  display: flex;
+  display: grid;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  grid-template-columns: repeat(3, minmax(400px, 1fr));
+  grid-template-rows: repeat(2, 1fr);
+  place-items: center;
   align-content: center;
   margin: 10px 10px;
-  background-color: beige;
+  /* background-color: beige; */
   height: 85%;
-  width: 100%;  
+  width: 100%;
+  gap: 10px 20px;
+  /* grid-auto-flow: dense; */
 `;
-
 
 
 function App() {
@@ -231,11 +249,14 @@ function App() {
   const [isPwModalOpen, setIsPwModalOpen] = useState(false);
   const [isWdModalOpen, setIsWdModalOpen] = useState(false);
   const [postList, setPostList] = useState([]);
-  const GITHUB_ID = 'c0dbbe927c47055f34f7';
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState({});
+  const GITHUB_ID = "24bfea583d4a595757ef";
   const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
   
   useEffect(()=> {
     renderMain();
+    console.log("selectedPost ========", selectedPost)
     const url = new URL(window.location.href)
     const authorizationCode = url.searchParams.get('code');
     if (authorizationCode) {
@@ -243,11 +264,13 @@ function App() {
     }
   },[userInfo, isLogin, queryOptions, tagList])
 
+  useEffect(()=> {
+    console.log("selectedPost====", selectedPost);
+    openPostModal();
+  },[selectedPost])
+
   const renderMain = () => {
-    console.log("Object.values(queryOptions) ===", Object.values(queryOptions));
     const {order, page, sex, weather, season, style}= queryOptions;
-    console.log("{order, page, sex, weather, season, style} =====", {order, page, sex, weather, season, style});
-    console.log("Object.values(page) ====", Object.keys(page));
     axios({
       url: "http://localhost:5000/main",
       method: "get",
@@ -289,13 +312,14 @@ function App() {
         accessLogin(); // Login 처리
       })
       .catch((err) => console.log(err));
-    
-    // this.setState({
-    //     isLogin: true,
-    //     accessToken: resp.data.accessToken
-    // })
   }
   
+  const selectPost = (postId) => {
+    const getPost = postList.filter((post)=> post.postId === postId);
+    console.log("selectPost 시작~!");
+    console.log("getPost===", getPost);
+    setSelectedPost(getPost);
+  }
   const deleteTags = () => {
     setQueryOptions({order: {}, page: 1, sex: {}, weather: {}, season: {}, style: {}});
     setTagList([]);
@@ -333,7 +357,6 @@ function App() {
   }
 
   const openWdModal = () => {
-    // e.stopPropagation();
     setIsWdModalOpen(!isWdModalOpen);
   }
 
@@ -342,7 +365,7 @@ function App() {
 
     if(!isLogin) {
       window.location.href = "http://localhost:3000"
-    }
+    } 
 
     axios({
       url: `http://localhost:5000/user/logout?loginmethod=${loginMethod}`,
@@ -377,13 +400,16 @@ function App() {
   const reDirectToGithub = () => {
     window.location.assign(GITHUB_URL);
   }
+  const openPostModal = () => {
+    setIsPostModalOpen(!isPostModalOpen);
+  }
+
   return (
     <Router>
         <Switch>
           <Route path="/" exact={true}></Route>
           <Route path="/login"><Login reDirectToGithub={reDirectToGithub} accessLogin={accessLogin} changeUserInfo={changeUserInfo} changeAccessToken={changeAccessToken} accessToken={accessToken} userInfo={userInfo}/></Route>
           <Route path="/signup"><Signup reDirectToGithub={reDirectToGithub}/></Route>
-          <Route path="/post"><PostModal/></Route>
           <Route path="/newpost"><NewPost userInfo={userInfo} accessToken={accessToken}/></Route>
       </Switch>
       <Container>
@@ -395,6 +421,9 @@ function App() {
           ? null
           : <Withdrawal resetUserInfo={resetUserInfo} email={userInfo.email} accessToken={accessToken} loginMethod={userInfo.loginMethod} openWdModal={openWdModal}></Withdrawal>
           }
+          {!isPostModalOpen || Object.keys(selectedPost).length === 0
+          ? null
+          : <PostModal openPostModal={openPostModal} selectedPost={selectedPost} />}
         <Header>
             <Blank></Blank>
           <LogoDiv>
@@ -417,24 +446,6 @@ function App() {
           <SelectButton onClick={openWdModal}>회원탈퇴</SelectButton>
           <SelectButton onClick={clickToLogout}>로그아웃</SelectButton>
           </div>
-          // <div className="navi-div">
-          //     <nav>
-          //       <ul className="ul-dept1">
-          //         <li className="li-dept1">
-          //           <a className="a-dept1">정보수정</a>
-          //           <ul className="ul-dept2">
-          //             <li className="li-dept2">
-          //               <a className="a-dept2" onClick={openPwModal}>비밀번호변경</a>
-          //             </li>
-          //             <li className="li-dept2">
-          //               <a className="a-dept2"onClick={openWdModal}>회원탈퇴</a>
-          //             </li>
-          //           </ul>
-          //         </li>
-          //       </ul>
-          //     </nav>
-            // <SelectButton onClick={clickToLogout}>로그아웃</SelectButton>
-            // </div>  
           } 
           </ButtonDiv>
         </Header>
@@ -460,15 +471,7 @@ function App() {
           <WriteButton onClick={clickToWrite}>글쓰기</WriteButton>
         </MainTop>
         <MainTag>
-        {/* {tagList.length <= 1 
-          ? null
-          : tagList.map((tag) => {
-            return (
-              <Tag key={tag}>{tag}</Tag>
-            )
-          })} */}
         {Object.keys(queryOptions).map((option)=> {
-          console.log("key ===", Object.values(queryOptions[option]).filter((val) => val !== ""))
           if(option === 'page') return;
           return Object.values(queryOptions[option]).map((value) => {
             if(value === "") return;
@@ -491,11 +494,11 @@ function App() {
             <Main 
               key={post.postId}
               postId={post.postId}
-              username={post.username} 
               imgSrc={post.imageSrc} 
               like={post.like} 
               view={post.view}
-              tag={post.tag}></Main>
+              selectPost={selectPost}>
+            </Main>
             )
           })}
         </MainDiv>
