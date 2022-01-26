@@ -17,6 +17,7 @@ import {
 import axios from 'axios';
 import styled from "styled-components";
 import viewOptions from './viewsOption';
+import NewPost from './pages/NewPost';
 // import dotenv from 'dotenv'
 // dotenv.config()
 
@@ -395,11 +396,10 @@ function App() {
     }
       window.location.href="http://localhost:3000/login"
   }
-
+  
   const reDirectToGithub = () => {
     window.location.assign(GITHUB_URL);
   }
-
   const openPostModal = () => {
     setIsPostModalOpen(!isPostModalOpen);
   }
@@ -410,6 +410,7 @@ function App() {
           <Route path="/" exact={true}></Route>
           <Route path="/login"><Login reDirectToGithub={reDirectToGithub} accessLogin={accessLogin} changeUserInfo={changeUserInfo} changeAccessToken={changeAccessToken} accessToken={accessToken} userInfo={userInfo}/></Route>
           <Route path="/signup"><Signup reDirectToGithub={reDirectToGithub}/></Route>
+          <Route path="/newpost"><NewPost userInfo={userInfo} accessToken={accessToken}/></Route>
       </Switch>
       <Container>
           {!isPwModalOpen 
