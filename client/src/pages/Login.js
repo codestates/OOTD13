@@ -122,6 +122,7 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
     axios
       .post("http://localhost:5000/user/login", {email, password})
       .then((result) => {
+        console.log("result.data.data =====", result.data.data)
         const {accessToken, userInfo} = result.data.data; // result.data의 정보를 갖고 main페이지로 redirect 필요
         changeAccessToken(accessToken);
         changeUserInfo(userInfo);
