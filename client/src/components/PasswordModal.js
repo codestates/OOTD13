@@ -120,7 +120,7 @@ export const PasswordModal = ({email, password, openPwModal, accessToken}) => {
     if(curPassword === "") {
       alert("현재 비밀번호를 입력하세요");
       return;
-    } else if(!curPassword === password) {
+    } else if(!(curPassword === password)) {
       alert("현재 비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -135,8 +135,11 @@ export const PasswordModal = ({email, password, openPwModal, accessToken}) => {
     } else if(!isValidPassword) {
       alert("새 비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
       return;
-    } else if(!newPassword === password) {
+    } else if(newPassword === password) {
       alert("새 비밀번호가 현재 비밀번호와 같습니다.");
+      return;
+    } else if(!(newPassword === newPasswordCheck)) {
+      alert("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       return;
     } else {
       axios({
