@@ -565,9 +565,8 @@ function App() {
                   </Cancel>
                 )}
               </MainTag>
-              {postList.length === 0 ? (
-                 </MainTag>
-        {isLoading
+              {/* {postList.length === 0 ? ( */}
+                {isLoading
         ? <NoPost>
           <img src={loadingImg}></img>
         </NoPost>
@@ -576,22 +575,22 @@ function App() {
           <img src={noImage} width="300px" height="300px"></img>
           <span>찾으시는 결과가 없습니다.ㅠㅠ </span>
           </NoPost>
-        : 
-                <MainDiv>
-                  {postList.map((post) => {
-                    return (
-                      <Main
-                        key={post.postId}
-                        postId={post.postId}
-                        imgSrc={post.imageSrc}
-                        like={post.like}
-                        view={post.view}
-                        selectPost={selectPost}
-                      ></Main>
-                    );
-                  })}
-                </MainDiv>
-              )}
+        : <MainDiv>
+        {postList.map((post) => 
+        {
+          return (
+          <Main 
+            key={post.postId}
+            postId={post.postId}
+            imgSrc={post.imageSrc} 
+            like={post.like} 
+            view={post.view}
+            selectPost={selectPost}>
+          </Main>
+          )
+        })}
+      </MainDiv>
+      }
               <Pagination page={page} getPage={getPage}></Pagination>
             </Body>
             <Footer></Footer>
