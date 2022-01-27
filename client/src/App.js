@@ -47,27 +47,28 @@ const Header = styled.div`
 `;
 const Button = styled.button`
   width: 120px;
-  height: 50px;
-  background-color: #36c5f0;
+  height: 40px;
+  background-color: rgba(254, 131, 198, 0.7);
   border: 1px solid #00bcf5;
-  color: white;
+  color: #343A40;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.12);
   border: none;
-  border-radius: 4px;
-  font-weight: 500;
+  border-radius: 6px;
+  font-weight: 700;
   margin-left: 10px;
-  font-size: 18px;
+  font-size: 16px;
 `;
 const WriteButton = styled(Button)`
+  color: white;
   width: 200px;
-  height: 60px;
   justify-self: flex-end;
   align-self: center;
-  background-color: rosybrown;
+  background-color: #343A40;
   margin-right: 30px;
 `;
 const SelectButton = styled(Button)`
-  width: 150px;
+  width: auto;
+  height: min(40px, auto);
 `;
 const A = styled.a`
   width: 150px;
@@ -100,11 +101,13 @@ const Logo = styled.img`
 `;
 const Body = styled.div`
   width: 100%;
-  height: 100%;
+  height: 80vh;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;  
+  /* justify-content: flex-start; */
   /* background-color: violet; */
   `
 ;
@@ -113,8 +116,11 @@ const MainTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 10%;
+  height: 5vh;
   width: 100%;
+  margin: 0;
+  padding: 0;
+  /* background-color: blueviolet; */
 `;
 
 const Line = styled.hr`
@@ -126,20 +132,20 @@ const Line = styled.hr`
   margin: 0 0;
   padding: 0 0;
 `;
+
 const Select = styled.select`
-  width: 100px;
-  height: 50px;
+  /* width: 100px; */
+  height: 40px; 
   margin: 0 15px;
   display: inline-block;
   box-sizing: border-box;
   padding-left: 10px;
   border-radius: 6px;
   border: none;
-  background-color: #c8c8c8;
-  height: 50px;
-  font-size: 19px;
+  background-color: #342B00;
+  font-size: 18px;
   font-weight: 700;
-  color: rgb(60, 60, 60);
+  color: white;
   cursor: pointer;
   &:hover {
     background-color: (20, 20, 20);
@@ -150,44 +156,46 @@ const MainSelect = styled.div`
   /* align-self: center; */
   display: flex;
   align-items: center;
+  /* height: 100%; */
+  width: 100%;
   height: 100%;
-  width: 80%;
   /* background-color: orange; */
 `;
 const MainTag = styled.div`
   display: flex;
-  height: 5%;
+  align-items: center;
+  height: 3vh;
   width: 100%;
   margin-left: 30px;
   /* background-color: paleturquoise; */
 `;
 
-const Tag = styled.span`
+const Tag = styled.button`
   width: auto;
-  height: 32px;
+  height: 3vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: white;
   padding: 0 8px;
-  margin: 0 8px 8px 0;
+  margin-right: 8px;
   font-size: 18px;
   font-weight: 500;
   list-style: none;
-  border-radius: 6px;
-  font-weight: 800;
-  background-color: #7ad7f5;
+  border-radius: 10px;
+  border: 1px solid gray;
+  font-weight: 600;
+  background-color: rgb(52, 58, 64, 0.7);
 `;
 
 const Cancel = styled.button`
   display: flex;
   align-items: center;
   justify-items: center;
-  width: 100px;
+  /* width: 100px; */
   height: 30px;
   border-radius: 6px;
-  background-color: white;
-  color: #7ad7f5;
+  color: rgb(52, 58, 64, 0.7);
   font-size: 18px;
   font-weight: 800;
   border: 0;
@@ -195,26 +203,17 @@ const Cancel = styled.button`
 `;
 
 const Username = styled.span`
-  font-size: 18px;
-  font-weight: 800;
-  color: #7ad7f5;
-  display: inline-block;
-  background-color: rgb(230, 230, 230);
   width: auto;
-  padding: 10px;
+  height: 50px;
+  background-color: rgb(52, 58, 64, 0.7);
+  color: white;
+  padding: 8px;
   border-radius: 6px;
-  /* display: flex; */
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0 10px;
+  
 `;
-// const MainDiv = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: center;
-//   align-content: center;
-//   margin: 10px 10px;
-//   /* background-color: beige; */
-//   height: 85%;
-//   width: 100%;
-// `;
 
 const MainDiv = styled.div`
   display: grid;
@@ -225,11 +224,11 @@ const MainDiv = styled.div`
   place-items: center;
   align-content: center;
   margin: 10px 10px;
-  /* background-color: beige; */
-  height: 75%;
-  width: 100%;
+  height: 100%;
+  width: 80%;
   gap: 10px 20px;
   /* grid-auto-flow: dense; */
+  /* background-color: beige; */
 `;
 
 const NoPost = styled.div`
@@ -361,16 +360,25 @@ function App() {
     // console.log("getPost===", getPost);
     setSelectedPost(getPost);
   };
-  const deleteTags = () => {
-    setQueryOptions({
-      order: {},
-      page: 1,
-      sex: {},
-      weather: {},
-      season: {},
-      style: {},
-    });
-    setTagList([]);
+  const deleteTags = (tag) => {
+    let obj = JSON.parse(JSON.stringify(queryOptions));
+    if(tag === "all") {
+      setQueryOptions({
+        order: {},
+        page: 1,
+        sex: {},
+        weather: {},
+        season: {},
+        style: {},
+      });
+      setTagList([]);
+    } else {
+      obj[tag] = {};
+      setQueryOptions(obj);
+      let arr = tagList.slice();
+      arr.pop();
+      setTagList(arr);
+    }
   };
 
   const addTag = (event) => {
@@ -556,14 +564,15 @@ function App() {
                   if (option === "page") return;
                   return Object.values(queryOptions[option]).map((value) => {
                     if (value === "") return;
-                    return <Tag key={value}>{value}</Tag>;
+                    return <Tag key={value} onClick={()=> {deleteTags(option)}}>{value}</Tag>;
                   });
                 })}
-                {tagList.length <= 1 ? null : (
-                  <Cancel type="button" onClick={deleteTags}>
-                    초기화
+                {tagList.length < 1 
+                ? null 
+                : <Cancel type="button" onClick={()=>{deleteTags("all")}}>
+                  초기화
                   </Cancel>
-                )}
+                }
               </MainTag>
               {/* {postList.length === 0 ? ( */}
                 {isLoading

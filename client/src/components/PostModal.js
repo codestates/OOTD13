@@ -19,14 +19,14 @@ const Main = styled.div`
   background-color: #FAFAFA;
   display: flex;
   flex-direction: column;
-  width: min(600px, 1000px);
-  height: min(900px, 1080px);
+  /* width: min(600px, 1000px);
+  height: min(900px, 1080px); */
   margin-bottom: 100px;
 `
 
 const Img = styled.img`
-  width: 95%;
-  height: 70%;
+  /* width: 95%;
+  height: 70%; */
   justify-self: center;
   align-self: center;
   margin: 15px 15px 0 15px;
