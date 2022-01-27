@@ -5,8 +5,8 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   width: auto;
-  height: 420px;
-  margin: 5px 20px 5px 20px;
+  height: auto;
+  margin: 0;
   /* background-color: bisque; */
 `
 
@@ -15,18 +15,21 @@ const Img = styled.img`
   border-radius: 10px;
   justify-self: center;
   display: block;
-  margin: 0 auto;
-  width: min(auto, 380px);
-  height: 380px;
+  margin: 0;
+  /* width: min(auto, 380px); */
+  height: min(380px, 30vmin);
   cursor: pointer;
   &:hover {
-    transform: scale(1.05);
-    -webkit-transform: scale(1.05);
-    -moz-transform: scale(1.05);
-    -ms-transform: scale(1.05);
-    -o-transform: scale(1.05);
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+    -o-transform: scale(1.02);
+    transition: transform .2s;  
+    -o-transition: transform .2s;
+    -moz-transition: transform .2s;
+    -webkit-transition: transform .2s;
   }
-  /* background-color: black; */
 `
 
 const Inform = styled.span`
@@ -34,7 +37,7 @@ const Inform = styled.span`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 50px;
+  padding: 5px;
   font-weight: 500;
   color: gray;
 `
