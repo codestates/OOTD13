@@ -123,6 +123,8 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
         changeUserInfo(userInfo);
         alert("로그인에 성공하셨습니다.");
         localStorage.setItem("key", accessToken);
+        localStorage.setItem("user",userInfo.loginMethod)
+        localStorage.setItem('username',userInfo.username)
         setIsLogin(!isLogin);
         accessLogin();
       })

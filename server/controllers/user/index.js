@@ -6,5 +6,4 @@ module.exports = {
   emailCheck: require("./emailCheck"),
   nameCheck: require("./nameCheck"),
   withDrawal: require("./withDrawal"),
-  auth: require('./auth')
 };
