@@ -163,7 +163,7 @@ const MainTag = styled.div`
 `;
 
 const Tag = styled.span`
-  width: min(80px, 150px);
+  width: auto;
   height: 32px;
   display: flex;
   align-items: center;
