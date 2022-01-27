@@ -9,7 +9,7 @@ const Div = styled.div`
   align-self: flex-end;
   align-items: center;
   width: 100%;
-  height: 40px;
+  height: 3vh;
   margin-top: 30px;
   background-color: lightgray;
   padding: 0 0;

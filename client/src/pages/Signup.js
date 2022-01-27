@@ -1,6 +1,6 @@
 import { useState, useEffect} from 'react';
-import logo from "../public/img/logo.png"; 
-import githubLogo from "../public/img/github_logo.png"
+import logo from "../images/logo.png"; 
+import githubLogo from "../images/github_logo.png"
 import styled from 'styled-components';
 import axios from 'axios';
 

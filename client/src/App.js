@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import PasswordModal from "./components/PasswordModal";
 import PostModal from "./components/PostModal";
-import Withdrawal from "./components/Withdrawal";
 import Main from "./components/Main";
-import logo from "./images/ootd13Logo.png";
+import Nav from "./components/Nav";
+import logo from "./images/logo.png";
 import Footer from "./components/Footer";
 import "./App.css";
 import {
@@ -13,7 +12,6 @@ import {
   Route,
   Switch,
   Link,
-  Redirect,
 } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -24,32 +22,24 @@ import Pagination from './components/Pagination';
 import loadingImg from "./images/loading.gif";
 
 const Container = styled.div`
-  width: max(700px, auto);
+  /* width: max(700px, auto); */
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   justify-content: center;
   align-items: center;
-  /* margin: 0 150px; */
+  margin: auto;
   /* background-color: burlywood; */
   background-color: rgba(100,100,100,0.001);
   `
 ;
 
-const Header = styled.div`
-  height: 100px;
-  width: 100%;
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.05);
-  padding: 0 0;
-`;
 const Button = styled.button`
   width: 120px;
   height: 40px;
-  background-color: rgba(254, 131, 198, 0.7);
   border: 1px solid #00bcf5;
+  background-color: rgba(254, 131, 198, 0.7);
   color: #343A40;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.12);
   border: none;
@@ -58,6 +48,7 @@ const Button = styled.button`
   margin-left: 10px;
   font-size: 16px;
 `;
+
 const WriteButton = styled(Button)`
   color: white;
   width: 200px;
@@ -66,39 +57,7 @@ const WriteButton = styled(Button)`
   background-color: #343A40;
   margin-right: 30px;
 `;
-const SelectButton = styled(Button)`
-  width: auto;
-  height: min(40px, auto);
-`;
-const A = styled.a`
-  width: 150px;
-  background-color: red;
-`;
-const ButtonDiv = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 33%;
-  height: 100%;
-  margin-right: 30px;
-`;
-const Blank = styled.div`
-  height: 100%;
-  width: 33%;
-  justify-self: center;
-  margin-right: 20px;
-`;
-const LogoDiv = styled(Blank)`
-  height: 100%;
-  display: flex;
-  align-content: flex-start;
-  justify-content: center;
-`;
 
-const Logo = styled.img`
-  width: 150px;
-  height: 100%;
-`;
 const Body = styled.div`
   width: 100%;
   height: 80vh;
@@ -118,24 +77,14 @@ const MainTop = styled.div`
   align-items: center;
   height: 5vh;
   width: 100%;
-  margin: 0;
+  margin-bottom: 10px;
   padding: 0;
   /* background-color: blueviolet; */
 `;
 
-const Line = styled.hr`
-  color: black;
-  background-color: rgba(0, 0, 0, 0.4);
-  border: 1;
-  height: 1;
-  width: 100%;
-  margin: 0 0;
-  padding: 0 0;
-`;
-
 const Select = styled.select`
   /* width: 100px; */
-  height: 40px; 
+  height: 3vh; 
   margin: 0 15px;
   display: inline-block;
   box-sizing: border-box;
@@ -202,17 +151,14 @@ const Cancel = styled.button`
   outline: 0;
 `;
 
-const Username = styled.span`
-  width: auto;
-  height: 50px;
-  background-color: rgb(52, 58, 64, 0.7);
-  color: white;
-  padding: 8px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 18px;
-  margin: 0 10px;
-  
+const Line = styled.hr`
+  color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1;
+  height: 1;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0 0;
 `;
 
 const MainDiv = styled.div`
@@ -223,10 +169,10 @@ const MainDiv = styled.div`
   grid-template-rows: repeat(2, 1fr);
   place-items: center;
   align-content: center;
-  margin: 10px 10px;
+  /* margin: 10px 10px; */
   height: 100%;
   width: 80%;
-  gap: 10px 20px;
+  /* gap: 10px 20px; */
   /* grid-auto-flow: dense; */
   /* background-color: beige; */
 `;
@@ -258,8 +204,6 @@ function App() {
     season: {},
     style: {},
   });
-  const [isPwModalOpen, setIsPwModalOpen] = useState(false);
-  const [isWdModalOpen, setIsWdModalOpen] = useState(false);
   const [postList, setPostList] = useState([]);
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
@@ -288,12 +232,12 @@ function App() {
 
   useEffect(() => {
     const tmp = localStorage.getItem("key");
-
     if (!tmp) return;
     usernameHandler()
     setIsLogin(true);
     setAccessToken(tmp);
   });
+
   const usernameHandler = () => {
     const localUsername = localStorage.getItem("username")
     if(userInfo.username === ""){
@@ -336,6 +280,10 @@ function App() {
   const accessLogin = () => {
     setIsLogin(!isLogin);
   };
+
+  const LoginApproval = () => {
+    setIsLogin(true);
+  }
   const getAccessToken = (authorizationCode) => {
     axios({
       url: "http://localhost:5000/user/login/github",
@@ -356,8 +304,6 @@ function App() {
 
   const selectPost = (postId) => {
     const getPost = postList.filter((post) => post.postId === postId);
-    // console.log("selectPost 시작~!");
-    // console.log("getPost===", getPost);
     setSelectedPost(getPost);
   };
   const deleteTags = (tag) => {
@@ -403,18 +349,6 @@ function App() {
     setTagList([...tagList, text]);
   };
 
-  const openPwModal = () => {
-    // e.stopPropagation();
-    if (userInfo.loginMethod === 1) {
-      alert("SNS계정 회원은 비밀번호를 변경할 수 없습니다.");
-      return;
-    }
-    setIsPwModalOpen(!isPwModalOpen);
-  };
-
-  const openWdModal = () => {
-    setIsWdModalOpen(!isWdModalOpen);
-  };
 
   const clickToLogout = () => {
     let { loginMethod } = userInfo;
@@ -442,6 +376,7 @@ function App() {
       });
     localStorage.removeItem("key");
     localStorage.removeItem("user");
+    window.location.href="http://localhost:3000"
   };
 
   const changeUserInfo = (info) => {
@@ -465,7 +400,6 @@ function App() {
   }
 
   const newPaging = (newPage) => {
-    console.log("newPaging 시작!");
     const object = JSON.parse(JSON.stringify(queryOptions));
     object.page = newPage;  
     setQueryOptions(object);
@@ -476,23 +410,6 @@ function App() {
       <Switch>
         <Route path="/" exact={true}>
           <Container>
-            {!isPwModalOpen ? null : (
-              <PasswordModal
-                email={userInfo.email}
-                password={userInfo.password}
-                openPwModal={openPwModal}
-                accessToken={accessToken}
-              ></PasswordModal>
-            )}
-            {!isWdModalOpen ? null : (
-              <Withdrawal
-                resetUserInfo={resetUserInfo}
-                email={userInfo.email}
-                accessToken={accessToken}
-                loginMethod={userInfo.loginMethod}
-                openWdModal={openWdModal}
-              ></Withdrawal>
-            )}
             {!isPostModalOpen ||
             Object.keys(selectedPost).length === 0 ? null : (
               <PostModal
@@ -500,35 +417,16 @@ function App() {
                 selectedPost={selectedPost}
               />
             )}
-            <Header>
-              <Blank></Blank>
-              <LogoDiv>
-                <Logo src={logo} />
-              </LogoDiv>
-              <ButtonDiv>
-                {!isLogin ? (
-                  <div>
-                    <Link to="/login">
-                      <Button>로그인</Button>
-                    </Link>
-                    <Link to="/signup">
-                      <Button>회원가입</Button>
-                    </Link>
-                  </div>
-                ) : (
-                  <div>
-                    <Username>{userInfo.username}</Username>
-                    <SelectButton onClick={openPwModal}>
-                      비밀번호변경
-                    </SelectButton>
-                    <SelectButton onClick={openWdModal}>회원탈퇴</SelectButton>
-                    <SelectButton onClick={clickToLogout}>
-                      로그아웃
-                    </SelectButton>
-                  </div>
-                )}
-              </ButtonDiv>
-            </Header>
+            <Nav 
+            isLogin={isLogin}
+            accessToken={accessToken}
+            userInfo={userInfo} 
+            clickToLogout={clickToLogout}
+            changeAccessToken={changeAccessToken} 
+            usernameHandler={usernameHandler}
+            LoginApproval={LoginApproval}
+            resetUserInfo={resetUserInfo}
+            ></Nav>
             <Line></Line>
             <Body>
               <MainTop>
@@ -577,11 +475,11 @@ function App() {
               {/* {postList.length === 0 ? ( */}
                 {isLoading
         ? <NoPost>
-          <img src={loadingImg}></img>
+          <img src={loadingImg} alt="loading"></img>
         </NoPost>
         : postList.length === 0
         ? <NoPost>
-          <img src={noImage} width="300px" height="300px"></img>
+          <img src={noImage} alt="no-content"width="300px" height="300px"></img>
           <span>찾으시는 결과가 없습니다.ㅠㅠ </span>
           </NoPost>
         : <MainDiv>
@@ -619,10 +517,18 @@ function App() {
           <Signup reDirectToGithub={reDirectToGithub} />
         </Route>
         <Route exact path="/newpost">
-          <NewPost userInfo={userInfo} accessToken={accessToken} />
+          <NewPost 
+          userInfo={userInfo}
+          accessToken={accessToken}
+          resetUserInfo={resetUserInfo}
+          isLogin={isLogin} 
+          clickToLogout={clickToLogout} 
+          changeAccessToken={changeAccessToken} 
+          usernameHandler={usernameHandler}
+          LoginApproval={LoginApproval}
+          />
         </Route>
       </Switch>
-
     </Router>
   );
 }

@@ -25,8 +25,8 @@ const Main = styled.div`
 `
 
 const Img = styled.img`
-  /* width: 95%;
-  height: 70%; */
+  width: 95%;
+  height: 50%;
   justify-self: center;
   align-self: center;
   margin: 15px 15px 0 15px;
@@ -163,7 +163,6 @@ export const Post = ({selectedPost, openPostModal}) => {
       })
       .catch((err) => console.log(err));
   },[])
-  console.log(detail);
   
   
 
@@ -175,11 +174,11 @@ export const Post = ({selectedPost, openPostModal}) => {
           <Username class="post-form-username">{username}</Username>
           <Section>
             <Title>조회수</Title>
-            <Number class="post-form-views-num">{view}</Number>
+            <Number class="post-form-views-num">{view.toLocaleString()}</Number>
           </Section>
           <Section>
             <Title>좋아요</Title>
-            <Number class="post-form-like-num">{like}</Number>
+            <Number class="post-form-like-num">{like.toLocaleString()}</Number>
           </Section>
         </Inform>
         <Line />
