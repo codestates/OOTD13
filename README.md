@@ -5,7 +5,7 @@
 
 >옷장을 열어보며 제일 많이 하는 고민!
 
-"오늘 뭐 입지?"라는 것에 대한 걱정을 저희 OOTD13에서 도움을 드립니다.
+"오늘 뭐 입지?"라는 것에 대한 걱정을 저희 OOTD13 <u>(Outfit of the day, 오늘의 패션)</u>에서 도움을 드립니다.
 
 여러분들의 코디를 공유하는 커뮤니티 OOTD13입니다.
 
@@ -40,8 +40,17 @@ OOTD13은 뭐가 다른가요?
 **- Stack :** `Node.express` `Sequelize` `jwt` `MySQL` `Node.js` 
 
 **- Works :**
-
-💻 Contribution
+<details>
+<summary>💻 Contribution</summary>
+<div markdown="1">
+<ul>
+<li>express, sequelize 사용 환경 설정</li>
+<li>게시물 작성 페이지 구현</li>
+<li>로그인, 소셜로그인, 로그아웃, 정보수정, 회원탈퇴 엔드포인트 구현</li>
+<li>jwt를 이용한 토큰방식의 보안 인증 방식 구현</li>
+</ul>
+</div>
+</details>
 
 ### 한주형 [![깃허브](https://img.shields.io/badge/GitHub-MR.HANBEAN-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/Mr-Hanbean)
 **- Role :** Team Member
@@ -54,7 +63,16 @@ OOTD13은 뭐가 다른가요?
 <details>
 <summary>💻 Contribution</summary>
 <div markdown="1">       
-테스트
+<ul>
+<li> 로그인, 회원가입, 메인페이지 디자인 (Style-Component)</li>
+<li> 로그인 기능 구현 </li>
+<li> 회원가입 기능 구현 (일반 회원가입, 깃허브 Oauth 회원가입)</li>
+<li> 회원탈퇴 / 패스워드 변경 / 로그아웃 기능 구현</li>
+<li> 이메일, 비밀번호, 별명 정규식을 통한 중복 체크</li>
+<li> 메인페이지 기능 구현</li>
+<li>조회 필터 추가 및 삭제 기능 구현</li>
+<li> 페이지네이션 기능 추가</li>
+</ul>
 </div>
 </details>
 <hr>
@@ -67,9 +85,18 @@ OOTD13은 뭐가 다른가요?
 **- Stack :** `Node.js` `Node.express` `MySQL` `Sequelize` `axios` `jwt`
 
 **- Works :**
-
-💻 Contribution
+<details>
+<summary>💻 Contribution</summary>
+<div markdown="1">  
+<ul>
+<li>express, sequelize 사용 환경 설정</li>
+<li>메인 페이지에서 클라이언트의 요청에 따라 게시물 필터링 기능 구현</li>
+<li>게시물 조회,작성,수정,삭제 엔드포인트 구현</li>
+<li>서버 전반적인 에러핸들링</li>
+</ul>
+  </div>
 <hr>
+
 
 ### 김상언 [![깃허브](https://img.shields.io/badge/GitHub-vvindovv-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/vvindovv)    
 **- Role :** Team Member
