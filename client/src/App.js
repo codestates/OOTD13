@@ -4,7 +4,6 @@ import Signup from "./pages/Signup";
 import PostModal from "./components/PostModal";
 import Main from "./components/Main";
 import Nav from "./components/Nav";
-import logo from "./images/logo.png";
 import Footer from "./components/Footer";
 import "./App.css";
 import {
@@ -210,8 +209,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
 
-  const GITHUB_ID = "24bfea583d4a595757ef";
-  const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_ID}`;
+  const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_ID}`;
 
   useEffect(() => {
     setIsLoading(true);
@@ -237,6 +235,7 @@ function App() {
     setIsLogin(true);
     setAccessToken(tmp);
   });
+  console.log(process.env.REACT_APP_API_URL);
 
   const usernameHandler = () => {
     const localUsername = localStorage.getItem("username")
@@ -248,7 +247,7 @@ function App() {
   const renderMain = () => {
     const { order, page, sex, weather, season, style } = queryOptions;
     axios({
-      url: "http://localhost:5000/main",
+      url: `${process.env.REACT_APP_API_URL}/main`,
       method: "get",
       params: {
         order: String(Object.keys(order)) || "",
@@ -275,6 +274,7 @@ function App() {
     });
     setIsLogin(false);
     localStorage.removeItem("key");
+    window.location.href=process.env.REACT_APP_HOME_URL;
   };
 
   const accessLogin = () => {
@@ -284,9 +284,10 @@ function App() {
   const LoginApproval = () => {
     setIsLogin(true);
   }
+
   const getAccessToken = (authorizationCode) => {
     axios({
-      url: "http://localhost:5000/user/login/github",
+      url: `${process.env.REACT_APP_API_URL}/user/login/github`,
       method: "post",
       data: {
         authorizationCode,
@@ -357,12 +358,12 @@ function App() {
     loginMethod = loginMethod.toString();
 
     if (!isLogin) {
-      window.location.href = "http://localhost:3000";
+      window.location.href = process.env.REACT_APP_HOME_URL;
     }
     if (!isLogin) return;
 
     axios({
-      url: `http://localhost:5000/user/logout?loginmethod=${loginMethod}`,
+      url: `${process.env.REACT_APP_API_URL}/user/logout?loginmethod=${loginMethod}`,
       method: "get",
       headers: { authorization: accessToken },
     })
@@ -376,7 +377,7 @@ function App() {
       });
     localStorage.removeItem("key");
     localStorage.removeItem("user");
-    window.location.href="http://localhost:3000"
+    window.location.href=process.env.REACT_APP_HOME_URL;
   };
 
   const changeUserInfo = (info) => {
@@ -427,7 +428,6 @@ function App() {
             LoginApproval={LoginApproval}
             resetUserInfo={resetUserInfo}
             ></Nav>
-            <Line></Line>
             <Body>
               <MainTop>
                 <MainSelect>

@@ -113,7 +113,7 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
       return;
     }
     axios
-      .post("http://localhost:5000/user/login", {email, password})
+      .post(`${process.env.REACT_APP_API_URL}/user/login`, {email, password})
       .then((result) => {
         const {accessToken, userInfo} = result.data.data; // result.data의 정보를 갖고 main페이지로 redirect 필요
         changeAccessToken(accessToken);
@@ -129,11 +129,11 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
   }
 
   const clickToSignup = () => {
-    window.location.href = 'http://localhost:3000/signup';
+    window.location.href = `${process.env.REACT_APP_HOME_URL}/signup`;
   }
   
   const clickToHome = () => {
-    window.location.href = 'http://localhost:3000/';
+    window.location.href = process.env.REACT_APP_HOME_URL;
   }
 
   const changeEmail = (event) => {

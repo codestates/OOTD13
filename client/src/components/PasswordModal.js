@@ -138,7 +138,7 @@ function PasswordModal ({email, password, openPwModal, accessToken}) {
       return;
     } else {
       axios({
-        url: "http://localhost:5000/password",
+        url: `${process.env.REACT_APP_API_URL}/password`,
         method: "patch",
         headers: {authorization: accessToken},
         data: {

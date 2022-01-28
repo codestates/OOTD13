@@ -320,7 +320,7 @@ export const NewPost = ({ userInfo, accessToken, resetUserInfo, isLogin, clickTo
   }
 
   const cancleHandler = () => {
-    window.location.href = "http://localhost:3000";
+    window.location.href = process.env.REACT_APP_HOME_URL;
   };
 
   const submitHandler = () => {
@@ -328,7 +328,7 @@ export const NewPost = ({ userInfo, accessToken, resetUserInfo, isLogin, clickTo
       alert("이미지를 넣어주세요");
     } else {
       axios({
-        url: `http://localhost:5000/post?loginmethod=${
+        url: `${process.env.REACT_APP_API_URL}/post?loginmethod=${
           userInfo.loginMethod || 0
         }`,
         method: "post",

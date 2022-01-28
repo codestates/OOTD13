@@ -157,7 +157,7 @@ export const Post = ({selectedPost, openPostModal}) => {
 
   
   useEffect(()=> {
-    axios({url: "http://localhost:5000/post",method: "get",params: {id: postId}})
+    axios({url: `${process.env.REACT_APP_API_URL}/post`, method: "get",params: {id: postId}})
       .then((res) => {
         setDetail(res.data.data.content);
       })
