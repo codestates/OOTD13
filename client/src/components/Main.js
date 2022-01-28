@@ -44,8 +44,8 @@ const Img = styled.img`
   display: block;
   margin: auto;
   padding: 0;
-  width: 350px;
-  height: 350px;
+  width: 340px;
+  height: 340px;
   overflow: hidden;
   cursor: pointer;
 `
