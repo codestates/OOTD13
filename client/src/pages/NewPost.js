@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import Footer from "../components/Footer";
+import Nav from "../components/Nav";
 var AWS = require("aws-sdk/dist/aws-sdk-react-native");
 
 const ImgBox = styled.div`
@@ -23,7 +25,7 @@ const ImgDescDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 92%;
   margin: 0 0;
   color: white;
   font-weight: 600;
@@ -34,24 +36,21 @@ const ImgDesc = styled.span`
   margin: 0 0;
   color: white;
   font-weight: 600;
-  background-color: rosybrown;
 `
 
 const ImgPreview = styled.img`
   width: 100%;
-  height: 95%;
+  height: 92%;
   `;
 
 const ImgSrc = styled.input`
   display: flex;
-  /* align-items: center; */
   align-content: center;
-  /* justify-content: center; */
   justify-self: center;
   align-self: center; 
   width: 50%;
   height: 30px;
-  margin-top: 10px;
+  margin-top: 2px;
   padding: 0 0;
   /* background-color: black; */
 `;
@@ -71,16 +70,22 @@ const DescribeContainer = styled.div`
 
 const Tmp = styled.div`
   width: 90vw;
-  height: auto;
+  height: 80vh;
   display: flex;
   justify-content: center;
+  justify-items: center;
+  align-items: center;
+  background-color: whitesmoke;
 `;
 
 const DescribeBox = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: row;
   width: 100%;
   height: 2rem;
+  margin: 10px 0;
+  /* background-color: darkcyan; */
 `;
 
 const Div = styled.div`
@@ -88,19 +93,23 @@ const Div = styled.div`
   height: 100vh;
   width: 100vw;
   margin: auto;
-  /* background-color: blue; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+  /* align-items: center; */
+  /* background-color: darkgoldenrod; */
 `;
+
 const SpanDescription = styled.span`
   // span.description , span.ootd-tag, span.selected-tag
   display:inline-block;
   font-size: 20px;
   margin: 10px 0;
   font-weight: bold;
+  /* background-color: yellowgreen; */
 `;
+
 const SpanProduct = styled.span`
   display: flex;
   justify-content: center;
@@ -108,10 +117,10 @@ const SpanProduct = styled.span`
   align-items: center;
   height: 100%;
   /* display: inline-block; */
-  font-size: 16px;
+  font-size: 1.2vmin;
   font-weight: 600;
   margin: 0 0;
-  padding: 0 0;
+  padding: 2px 2px;
   width: 6%;
   color: white;
   border-radius: 6px;
@@ -150,7 +159,7 @@ const SelectTag = styled.select`
     background-color: (20, 20, 20);
   }
 `;
-const OptionTag = styled;
+
 const ButtonTagBox = styled.div`
   width: 100%;
   height: 32px;
@@ -180,7 +189,7 @@ const ButtonReset = styled(ButtonTag)`
 `
 
 const ButtonCancle = styled.button`
-  border: 2px solid black;
+  border: 1px solid gray;
   box-sizing: border-box;
   padding: 10px;
   font-size: 16px;
@@ -203,18 +212,18 @@ const ButtonSubmit = styled.button`
   margin: 5px;
   /* margin-right: 50; */
 `;
-const Footer = styled.div`
-  width: 350px;
-  height: 20%;
-  display: grid;
-  // justify-content: center;
-  // align-self: center;
-  // color: gray;
-  // font-size: 14px;
+// const Footer = styled.div`
+//   width: 350px;
+//   height: 20%;
+//   display: grid;
+//   // justify-content: center;
+//   // align-self: center;
+//   // color: gray;
+//   // font-size: 14px;
 
-  margin: 20px;
+//   margin: 20px;
 
-`;
+// `;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -223,7 +232,7 @@ const ButtonContainer = styled.div`
   width: 100%;
 `;
 
-export const NewPost = ({ userInfo, accessToken }) => {
+export const NewPost = ({ userInfo, accessToken, resetUserInfo, isLogin, clickToLogout, changeAccessToken, usernameHandler, LoginApproval}) => {
   const [shirts, setShirts] = useState("");
   const [pants, setPants] = useState("");
   const [acc, setAcc] = useState("");
@@ -311,7 +320,7 @@ export const NewPost = ({ userInfo, accessToken }) => {
   }
 
   const cancleHandler = () => {
-    window.location.href = "http://localhost:3000";
+    window.location.href = process.env.REACT_APP_HOME_URL;
   };
 
   const submitHandler = () => {
@@ -319,7 +328,7 @@ export const NewPost = ({ userInfo, accessToken }) => {
       alert("이미지를 넣어주세요");
     } else {
       axios({
-        url: `http://localhost:5000/post?loginmethod=${
+        url: `${process.env.REACT_APP_API_URL}/post?loginmethod=${
           userInfo.loginMethod || 0
         }`,
         method: "post",
@@ -374,6 +383,16 @@ export const NewPost = ({ userInfo, accessToken }) => {
 
   return (
     <Div>
+      <Nav
+      userInfo={userInfo}
+      isLogin={isLogin}
+      resetUserInfo={resetUserInfo}
+      accessToken={accessToken} 
+      clickToLogout={clickToLogout} 
+      changeAccessToken={changeAccessToken} 
+      usernameHandler={usernameHandler}
+      LoginApproval={LoginApproval}
+      ></Nav>
       {finish ? <Redirect to="/"></Redirect> : null}
       <Tmp>
         <ImgBox>

@@ -69,7 +69,8 @@ const Cancel = styled(Button)`
   border: 1px solid gray;
   color: black;
 `
-export const PasswordModal = ({email, password, openPwModal, accessToken}) => {
+
+function PasswordModal ({email, password, openPwModal, accessToken}) {
   const [curPassword, setCurPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordCheck, setNewPasswordCheck] = useState("");
@@ -109,10 +110,6 @@ export const PasswordModal = ({email, password, openPwModal, accessToken}) => {
   };
 
   const checkingPassword = () => {
-    console.log(`현재 비밀번호는 ${password}입니다.`);
-    console.log(`입력한 비밀번호는 ${curPassword}입니다.`);
-    console.log(`변경할 비밀번호는 ${newPassword}입니다.`);
-    console.log(curPassword === password);
 
     // 하나라도 공백이면 단순 return
     if(curPassword === "") {
@@ -141,7 +138,7 @@ export const PasswordModal = ({email, password, openPwModal, accessToken}) => {
       return;
     } else {
       axios({
-        url: "http://localhost:5000/password",
+        url: `${process.env.REACT_APP_API_URL}/password`,
         method: "patch",
         headers: {authorization: accessToken},
         data: {

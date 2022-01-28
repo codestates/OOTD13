@@ -1,7 +1,8 @@
 import { useState, useEffect} from 'react';
-import logo from "../public/img/logo.png"; 
-import githubLogo from "../public/img/github_logo.png"
+import logo from "../images/logo.png"; 
+import githubLogo from "../images/github_logo.png"
 import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
   const Div = styled.div`
@@ -9,7 +10,9 @@ import axios from 'axios';
     flex-direction: column;
     align-items: center;
   `
-  
+  const StyledLink = styled(Link)`
+    margin: 10px;
+  `
   const Nav = styled.div`
     height: 10%;
     align-self: flex-start;
@@ -171,6 +174,11 @@ import axios from 'axios';
     color: red;
   `
 
+  const Img = styled.img`
+    
+    margin: 10px;
+  `
+
 export const Signup = ({reDirectToGithub}) => {
   const [emailHead, setEmailHead] = useState("");
   const [emailTail, setEmailTail] = useState("");
@@ -264,7 +272,7 @@ export const Signup = ({reDirectToGithub}) => {
       return;
     } else {
       axios
-      .post("http://localhost:5000/user/namecheck", {username})
+      .post(`${process.env.REACT_APP_API_URL}/user/namecheck`, {username})
       .then((res) => {
         if(res.status === 200) {
           alert("사용 가능한 별명입니다.");
@@ -283,7 +291,7 @@ export const Signup = ({reDirectToGithub}) => {
       return;
     } else {
       axios
-      .post("http://localhost:5000/user/emailcheck", {email: email})
+      .post(`${process.env.REACT_APP_API_URL}/user/emailcheck`, {email: email})
       .then((res) => {
         if(res.status === 200) {
           alert("사용 가능한 이메일입니다.");
@@ -308,10 +316,10 @@ export const Signup = ({reDirectToGithub}) => {
       return;
     } else {
       axios
-        .post("http://localhost:5000/user/signup", {email, password, username})
+        .post(`${process.env.REACT_APP_API_URL}/user/signup`, {email, password, username})
         .then((res) => {
           alert("회원가입에 성공했습니다.");
-          window.location.href = "http://localhost:3000"
+          window.location.href = process.env.REACT_APP_HOME_URL
         })
         .catch((err) => console.log(err));
     }
@@ -332,15 +340,15 @@ export const Signup = ({reDirectToGithub}) => {
   return (
     <Div>
       <Nav>
-      <a href="/" className=" center-form-github">
-        <img src={logo} alt="logo" width="150px"></img>
-      </a>
+      <StyledLink to="/">
+        <Img src={logo} alt="logo" width="150px"></Img>
+      </StyledLink>
       </Nav>
       <Main>
         <TopForm>
           <TopTitle>회원가입</TopTitle>
           <SnsSpan>SNS계정으로 간편 로그인/회원가입</SnsSpan>
-          <GithubLink href="#" className="signup-form-github">
+          <GithubLink className="signup-form-github">
             <img src={githubLogo} onClick={reDirectToGithub} alt="githubLogo" width="50px"></img>
           </GithubLink>
         <Hr></Hr>
@@ -465,7 +473,7 @@ export const Signup = ({reDirectToGithub}) => {
       </CommonForm>
       <SubmitButton onClick={clickSignup}>회원가입하기</SubmitButton>
       <LoginRedirectionSection>
-        <DescSpan >이미 아이디가 있으신가요?<LoginRedirection href="http://localhost:3000/login">로그인</LoginRedirection></DescSpan>
+        <DescSpan >이미 아이디가 있으신가요?<LoginRedirection href={`${process.env.REACT_APP_HOME_URL}/login`}>로그인</LoginRedirection></DescSpan>
       </LoginRedirectionSection>
       </Main>
     </Div>

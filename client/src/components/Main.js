@@ -4,49 +4,60 @@ import styled from "styled-components";
 const Div = styled.div`
   display: flex;
   flex-direction: column;
-  width: auto;
-  height: auto;
+  align-items: center;
+  justify-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
   margin: 0;
   /* background-color: bisque; */
 `
 
-const Img = styled.img`
-  align-self: flex-start;
-  border-radius: 10px;
-  justify-self: center;
-  display: block;
-  margin: 0;
-  /* width: min(auto, 380px); */
-  height: min(380px, 30vmin);
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.02);
-    -webkit-transform: scale(1.02);
-    -moz-transform: scale(1.02);
-    -ms-transform: scale(1.02);
-    -o-transform: scale(1.02);
-    transition: transform .2s;  
-    -o-transition: transform .2s;
-    -moz-transition: transform .2s;
-    -webkit-transition: transform .2s;
-  }
+const ImgDiv = styled(Div)`
+  display: flex;
+  text-align: center;
+  /* align-items: center;
+  justify-items: center;   */
+  height: 100%;
+  /* background-color: black; */
 `
+
 
 const Inform = styled.span`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 100%;
+  height: 100%;
   padding: 5px;
   font-weight: 500;
+  margin-top: 10px;
   color: gray;
+  /* background-color: chocolate; */
 `
+
+const Img = styled.img`
+  align-self: flex-start;
+  justify-self: center;
+  border-radius: 10px;
+  display: flex;
+  display: block;
+  margin: auto;
+  padding: 0;
+  width: 340px;
+  height: 340px;
+  overflow: hidden;
+  cursor: pointer;
+`
+
 
 function Main({postId, imgSrc, like, view, selectPost}) { 
   return (
     <Div>
+      <ImgDiv>
       <Img key={postId} src={imgSrc} onClick={()=> {selectPost(postId)}}></Img>
-      <Inform>조회수 {view}{" "}·{" "}좋아요 {like}</Inform>
+      </ImgDiv>
+      <Inform>조회수 {view.toLocaleString()}{" "}·{" "}좋아요 {like.toLocaleString()}</Inform>
     </Div>
   )
 }

@@ -70,7 +70,7 @@ export const Withdrawal = ({resetUserInfo, email, accessToken, loginMethod, open
 
   const clickToSubmit = () => {
     axios({
-      url: `http://localhost:5000/user/withdrawal?loginmethod=${loginMethod}`,
+      url: `${process.env.REACT_APP_API_URL}/user/withdrawal?loginmethod=${loginMethod}`,
       method: "delete",
       headers: {authorization: accessToken},
       data: {email}

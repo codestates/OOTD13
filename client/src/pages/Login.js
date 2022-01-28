@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../css/common.css'
-import logo from "../public/img/logo.png"; 
-import githubLogo from "../public/img/github_logo.png"
+import logo from "../images/logo.png"; 
+import githubLogo from "../images/github_logo.png"
 import styled from 'styled-components';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom'
@@ -105,8 +105,6 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
   
 
   useEffect(()=> {
-    console.log("accessToken::::", accessToken);
-    console.log("userInfo::::", userInfo);
   },[accessToken, userInfo])
 
   const clickToLogin = async (event) => {
@@ -115,9 +113,8 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
       return;
     }
     axios
-      .post("http://localhost:5000/user/login", {email, password})
+      .post(`${process.env.REACT_APP_API_URL}/user/login`, {email, password})
       .then((result) => {
-        console.log("result.data.data =====", result.data.data)
         const {accessToken, userInfo} = result.data.data; // result.data의 정보를 갖고 main페이지로 redirect 필요
         changeAccessToken(accessToken);
         changeUserInfo(userInfo);
@@ -132,11 +129,11 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
   }
 
   const clickToSignup = () => {
-    window.location.href = 'http://localhost:3000/signup';
+    window.location.href = `${process.env.REACT_APP_HOME_URL}/signup`;
   }
   
   const clickToHome = () => {
-    window.location.href = 'http://localhost:3000/';
+    window.location.href = process.env.REACT_APP_HOME_URL;
   }
 
   const changeEmail = (event) => {
@@ -177,7 +174,7 @@ export const Login = ({accessLogin, changeUserInfo, changeAccessToken, accessTok
       </form>
       <Signup type="submit" onClick={clickToSignup}>회원가입</Signup>
       <Span>SNS계정으로 간편 로그인/회원가입</Span>
-      <a href="#">
+      <a>
       <img src={githubLogo} onClick={reDirectToGithub}width="50px"></img>
       </a>
       <Line />

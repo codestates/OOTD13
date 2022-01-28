@@ -8,6 +8,8 @@
     "@testing-library/user-event": "^13.5.0",
     "aws-sdk": "^2.1063.0",
     "axios": "^0.25.0",
+    "dotenv": "^14.3.2",
+    "env-cmd": "^10.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^6.2.1",
@@ -18,9 +20,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node --max_old_space_size=4096 node_modules/.bin/react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start:staging": "env-cmd -e development react-scripts start",
+    "start:prod": "env-cmd -e production react-scripts start",
+    "build:staging": "env-cmd -e development react-scripts build",
+    "build:prod": "env-cmd -e production react-scripts build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
