@@ -51,6 +51,7 @@ OOTD13은 뭐가 다른가요?
 </ul>
 </div>
 </details>
+<hr>
 
 ### 한주형 [![깃허브](https://img.shields.io/badge/GitHub-MR.HANBEAN-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/Mr-Hanbean)
 **- Role :** Team Member
@@ -95,19 +96,7 @@ OOTD13은 뭐가 다른가요?
 <li>서버 전반적인 에러핸들링</li>
 </ul>
   </div>
-<hr>
-
-
-### 김상언 [![깃허브](https://img.shields.io/badge/GitHub-vvindovv-181717?style=for-the-badge&logo=GitHub&logoColor=181717)](https://github.com/vvindovv)    
-**- Role :** Team Member
-
-**- Position :** Front-End
-
-**- Stack :** `HTML` `CSS` `JavaScript` `React` `Axios` `Styled-Components` 
-
-**- Works :**
-
-💻 Contribution
+  </details>
 <hr>
 <p align="right">(<a href="#top">상단으로 돌아가기</a>)</p>
 
