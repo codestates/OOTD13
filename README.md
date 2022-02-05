@@ -14,6 +14,7 @@ OOTD13은 뭐가 다른가요?
 * 날씨, 성별, 스타일등 의 분류로 원하는 패션들만 볼수있습니다.:sunny::umbrella::cloud:
 * 코디에 사용했던 아이템들의 상품명이나 링크를 넣을수 있는 공간이 있어서 아이템들을 공유할 수 있습니다.:shoe::handbag::tshirt:
 
+## [OOTD 홈페이지](http://project-ootd13.s3-website.ap-northeast-2.amazonaws.com/)
 <p align="right">(<a href="#top">상단으로 돌아가기</a>)</p>
 
 ## :electric_plug: Built with
